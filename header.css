@@ -1,0 +1,120 @@
+header {
+  background: url('./The Band PSD/The Band PSD-assets/Header.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* background-attachment: fixed; */
+  height: 100vh;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.h1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 100%;
+}
+
+.h1 h1 {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 3.6em;
+  font-family: var(--oswald-family);
+  margin-left: 10em;
+}
+
+.h1 h1:nth-child(1) {
+  color: var(--brown-light);
+}
+
+.h1 h1:nth-child(2) {
+  color: var(--black-col);
+}
+
+@media (min-width: 600px) and (max-width: 900px)  {
+  .h1 h1 {
+    font-size: 2.7em;
+  }
+}
+
+@media ( max-width: 600px ) {
+  .h1 h1 {
+    margin-left: 0px;
+    font-size: 2.7em;
+  }
+  .h1 h1:nth-child(2) {
+    color: var(--brown-light);
+  }
+}
+
+nav {
+  padding-top: 3em;
+  padding-left: 3em;
+  display: block;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+}
+
+nav li {
+  margin: auto 2vh;
+  position: relative;
+}
+
+nav li::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  right: -50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--brown-col);
+}
+
+nav li:last-child::after {
+  display: none;
+}
+
+nav li.active::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: -100%;
+  left: 0;
+  background: url('./The Band PSD/The Band PSD-assets/Active copy.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+nav li a {
+  font-family: var(--lora-family);
+  font-size: 0.8em;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--black-col);
+  text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+  nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  nav li.active::before {
+    /* display: none; */
+  }
+  nav li::after {
+    display: none;
+  }
+  nav li {
+    margin: 2vh;
+  }
+}

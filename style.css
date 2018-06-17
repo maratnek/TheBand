@@ -1,0 +1,36 @@
+ /* Main Root */
+@import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700|Oswald:400,700');
+
+@import './header.css';
+@import './about.css';
+
+:root {
+   --lora-family: 'Lora', serif;
+   --oswald-family: 'Oswald', sans-serif;
+   --black-col: #241C18;
+   --brown-col: #826B60;
+   --brown-dark: #AB9C95;
+   --brown-light: #E4DDDB;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--lora-family) sans-serif;
+}
+
+section, footer {
+  background-color: var(--brown-col);
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  box-shadow: -20px 0px 100px 0px rgba(1,1,1,.5),
+               20px 0px 100px 0px rgba(1,1,1,.5);
+  background: white;
+  position: relative;
+}

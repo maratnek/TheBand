@@ -1,0 +1,65 @@
+.arrow-left img, .arrow-right img {
+  width: 20px;
+  height: 20px;
+}
+
+.arrow-right img{
+  transform: rotate(180deg);
+}
+
+section.about {
+  background: var(--brown-light);
+}
+
+section.about .container {
+  background: var(--brown-light);
+}
+
+.musicians {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.musicians ul {
+  list-style: none;
+  background-color: red;
+  position: absolute;
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+article {
+  position: absolute;
+}
+
+.musicians li {
+  /* transform: rotate(90deg); */
+  /* transform: scale(90deg); */
+}
+
+.musicians li .name, .musicians li .instrument {
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+figure.musician-img {
+  position: relative;
+}
+
+figure.musician-img img {
+  width: 100%;
+}
+
+figure.musician-img figcaption {
+  filter: sepia(100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--brown-light);
+  opacity: .3;
+}
