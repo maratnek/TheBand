@@ -3,6 +3,7 @@
 
 @import './header.css';
 @import './about.css';
+@import './music.css';
 
 :root {
    --lora-family: 'Lora', serif;
