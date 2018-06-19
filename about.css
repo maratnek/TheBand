@@ -68,7 +68,18 @@ figure.musician-img figcaption {
 }
 
 .musicians article {
-  width: 30%;
+  /* min-width: 100px; */
+  /* max-width: 300px; */
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.musicians article .box-rotate {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .musicians article .list-name {
@@ -79,69 +90,44 @@ figure.musician-img figcaption {
   font-family: var(--lora-family);
   font-weight: bold;
   font-size: 0.8em;
-  color: var(--brown-col);
+  color: var(--brown-dark);
   font-weight: bold;
-  background: rgba(255,255,255,0.8);
-  transform-origin: center;
+  background: rgba(255,255,255,0.3);
   transform: rotate(-90deg);
-  width: 80%;
-  box-shadow: 0px 0px 80px 30px rgba(255,255,255,.8);
+  box-shadow: 0px 0px 80px 30px rgba(255,255,255,.3);
+  border: none;
 }
 
 .musicians article .list-name .name {
   align-self: center;
   justify-self: right;
-  /* background: red; */
 }
+
+.musicians article .list-name .active {
+  color: var(--brown-col);
+}
+.musicians article .list-name .active.circle {
+  background-color: var(--brown-col);
+}
+
 .musicians article .list-name .instrument {
   align-self: center;
   justify-self: left;
-  /* background: green; */
 }
 
 .musicians article .list-name .circle {
   align-self: center;
   justify-self: center;
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background-color: var(--brown-col);
+  background-color: var(--brown-dark);
 }
-
-/* .musicians article ul {
-  list-style: none;
-  transform: rotate(-90deg);
-  transform-origin: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.musicians  article li {
-  font-size: 0.8em;
-}
-
-.musicians  article li .name,
-.musicians  article li .instrument {
-  display: inline-block;
-  position: relative;
-  text-transform: uppercase;
-}
-
-.musicians  article li .circle {
-  display: inline-block;
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: var(--brown-col);
-}
-*/
 
 .musicians article h3 {
   font-family: var(--oswald-family);
-  margin-top: 150px;
-  margin-bottom: 50px;
+  /* margin-top: 150px; */
+  /* margin-bottom: 50px; */
   color: var(--black-col);
   text-align: center;
   font-size: 1.5em;
