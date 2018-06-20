@@ -18,6 +18,7 @@ section.about .container {
 }
 
 .container figure.musician-img {
+  display: none;
   position: relative;
   transition: 1s transform;
   /* transform: translateX(300px); */
@@ -39,22 +40,30 @@ figure.musician-img figcaption {
 }
 
 .musicians {
-  position: absolute;
-  top: 0;
-  left: 0;
   display: flex;
   width: 100%;
   height: 100%;
   justify-content: space-around;
   align-items: center;
+  z-index: -2;
+}
+.musicians::before {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  width: 100%;
+  height: 100%;
+  /* background-color: red; */
+  background-image: url('https://source.unsplash.com/JTa5MN7ObbM/1600x900');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 
 .musicians .info {
   display: grid;
-  /* grid-template-columns: 1fr 1fr; */
-  grid-template: 3fr auto 2fr / 100% 300px ;
-  /* grid-template-areas: '' */
+  grid-template: 3fr auto 2fr / 1fr 1fr;
   grid-gap: 20px 10%;
   justify-content: center;
   align-content: center;

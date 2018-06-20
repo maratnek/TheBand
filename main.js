@@ -28,6 +28,8 @@ $(document).ready(function(){
     if (id === 'next')
     {
       console.log('next');
+      $('.musicians::before').css("background-image","url('https://source.unsplash.com/7IGBfd3FDtQ/1600x900')");
+      // $('.musicians').css("background-image","url('https://source.unsplash.com/7IGBfd3FDtQ/1600x900')");
       $('#about figure.musician-img').animate({
           transform: 'translateX(100px)'
       }, 1000, ()=>{
