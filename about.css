@@ -17,8 +17,10 @@ section.about .container {
   transform: rotate(180deg);
 }
 
-figure.musician-img {
+.container figure.musician-img {
   position: relative;
+  transition: 1s transform;
+  /* transform: translateX(300px); */
 }
 
 figure.musician-img img {
@@ -47,11 +49,34 @@ figure.musician-img figcaption {
   align-items: center;
 }
 
+
+.musicians .info {
+  display: grid;
+  /* grid-template-columns: 1fr 1fr; */
+  grid-template: 3fr auto 2fr / 100% 300px ;
+  /* grid-template-areas: '' */
+  grid-gap: 20px 10%;
+  justify-content: center;
+  align-content: center;
+  }
+
 .musicians .fullname {
-  text-align: right;
-  padding-top: 200px;
-  width: 30%;
+  grid-area: 3 / 1 / 4 / 2;
 }
+
+.musicians .list-name {
+/* .musicians .box-rotate { */
+  grid-area: 1 / 2 / 2 / 3;
+}
+
+.musicians .info h3 {
+  grid-area: 2 / 2 / 3 / 3;
+}
+
+.musicians .info p {
+  grid-area: 3 / 2 / 4 / 3;
+}
+
 .musicians .fullname h1{
   font-family: var(--oswald-family);
   font-size: 3.5em;
@@ -67,24 +92,16 @@ figure.musician-img figcaption {
   color: var(--black-col);
 }
 
-.musicians article {
-  /* min-width: 100px; */
-  /* max-width: 300px; */
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-}
 
-.musicians article .box-rotate {
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* .musicians .box-rotate { */
+  /* height: 300px; */
+/* } */
 
-.musicians article .list-name {
+.musicians .list-name {
   display: grid;
   grid-template-columns: 5fr 1fr 5fr;
+  justify-content: center;
+  align-content: center;
   grid-row-gap: 10px;
   text-transform: uppercase;
   font-family: var(--lora-family);
@@ -98,24 +115,24 @@ figure.musician-img figcaption {
   border: none;
 }
 
-.musicians article .list-name .name {
+.musicians .list-name .name {
   align-self: center;
   justify-self: right;
 }
 
-.musicians article .list-name .active {
+.musicians .list-name .active {
   color: var(--brown-col);
 }
-.musicians article .list-name .active.circle {
+.musicians .list-name .active.circle {
   background-color: var(--brown-col);
 }
 
-.musicians article .list-name .instrument {
+.musicians .list-name .instrument {
   align-self: center;
   justify-self: left;
 }
 
-.musicians article .list-name .circle {
+.musicians .list-name .circle {
   align-self: center;
   justify-self: center;
   width: 12px;
@@ -124,7 +141,7 @@ figure.musician-img figcaption {
   background-color: var(--brown-dark);
 }
 
-.musicians article h3 {
+.musicians .info h3 {
   font-family: var(--oswald-family);
   /* margin-top: 150px; */
   /* margin-bottom: 50px; */
@@ -133,7 +150,7 @@ figure.musician-img figcaption {
   font-size: 1.5em;
 }
 
-.musicians article p {
+.musicians .info p {
   line-height: 1.6;
   margin: 0 20px;
   color: var(--black-col);

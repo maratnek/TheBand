@@ -21,4 +21,25 @@ $(document).ready(function(){
       });
     } // End if
   });
+
+  $('.arrow').on('click', (ev)=>{
+    // console.log('click', ev);
+    let id = ev.currentTarget.id;
+    if (id === 'next')
+    {
+      console.log('next');
+      $('#about figure.musician-img').animate({
+          transform: 'translateX(100px)'
+      }, 1000, ()=>{
+        console.log('#about figure animate');
+      })
+    }
+    else if (id === 'prev')
+    {
+      console.log('prev');
+    }
+    else {
+      console.log('Not known id');
+    }
+  })
 });
