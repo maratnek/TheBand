@@ -1,0 +1,32 @@
+section.music {
+  background: white;
+}
+
+.album {
+  padding: 20px 40px;
+  display: grid;
+  grid-template: 1fr 1fr / 1fr 1fr;
+}
+
+.cover img{
+  width: 100%;
+}
+
+.discography {
+  grid-area: 2 / 1 / 3 / 2;
+}
+
+.player h2 {
+  /* font-family: var(--lora-family); */
+  font-family: var(--oswald-family);
+}
+
+.player h4 {
+  font-family: var(--oswald-family);
+  font-weight: lighter;
+}
+
+.player h5 {
+  font-family: var(--lora-family);
+  color: var(--brown-col);i
+}
