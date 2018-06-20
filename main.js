@@ -22,16 +22,43 @@ $(document).ready(function(){
     } // End if
   });
 
+  let idM = 0;
+  let urlsId = [
+    'https://source.unsplash.com/JTa5MN7ObbM/1600x900',
+    'https://source.unsplash.com/7IGBfd3FDtQ/1600x900',
+    'https://source.unsplash.com/wfBXHhMG67o/1600x900',
+
+  ];
+
   $('.arrow').on('click', (ev)=>{
     // console.log('click', ev);
     let id = ev.currentTarget.id;
     if (id === 'next')
     {
       console.log('next');
-      $('.musicians::before').css("background-image","url('https://source.unsplash.com/7IGBfd3FDtQ/1600x900')");
-      // $('.musicians').css("background-image","url('https://source.unsplash.com/7IGBfd3FDtQ/1600x900')");
+      console.log(idM);
+      if (idM + 1 < urlsId.length) {
+        ++idM;
+        $('figure .img').css("background-image",`url(${urlsId[idM]})`);
+      } else {
+        idM = 0;
+        $('figure .img').css("background-image",`url(${urlsId[idM]})`);
+      }
+
+       $('.list-name .active').removeClass('active');
+       $('.list-name .name').eq(idM + 1).addClass('active');
+       $('.list-name .circle').eq(idM + 1).addClass('active');
+       $('.list-name .instrument').eq(idM + 1).addClass('active');
+       console.log($('.list-name .name.active').text());
+       let pair = $('.list-name .name.active').text().split(' ');
+       console.log(pair[0], pair[1]);
+       $('.fullname .first').text(pair[0]);
+       $('.fullname .last').text(pair[1]);
+
+       // $('figure .img').removeClass('img').addClass('img');
+
       $('#about figure.musician-img').animate({
-          transform: 'translateX(100px)'
+        transform: 'translateX(100px)'
       }, 1000, ()=>{
         console.log('#about figure animate');
       })

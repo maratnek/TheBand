@@ -18,52 +18,54 @@ section.about .container {
 }
 
 .container figure.musician-img {
-  display: none;
   position: relative;
   transition: 1s transform;
-  /* transform: translateX(300px); */
 }
 
-figure.musician-img img {
+figure .img {
+  content: '';
+  display: block;
   width: 100%;
+  height: 100vh;
+  filter: sepia(100%) grayscale(100%);
+  background-image: url('https://source.unsplash.com/JTa5MN7ObbM/1600x900');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  /* transition:  1s animation; */
+  /* transition: animation; */
+  animation: mus 2s;
+}
+@keyframes mus {
+  0% {transform:translateX(-200px);}
+  100% {transform:translateX(0px);}
+
 }
 
 figure.musician-img figcaption {
-  filter: sepia(100%);
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: var(--brown-light);
-  opacity: .3;
+  opacity: .6;
 }
 
 .musicians {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
   width: 100%;
   height: 100%;
   justify-content: space-around;
   align-items: center;
-  z-index: -2;
 }
-.musicians::before {
-  position: absolute;
-  z-index: -1;
-  content: '';
-  width: 100%;
-  height: 100%;
-  /* background-color: red; */
-  background-image: url('https://source.unsplash.com/JTa5MN7ObbM/1600x900');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-
 
 .musicians .info {
   display: grid;
-  grid-template: 3fr auto 2fr / 1fr 1fr;
+  grid-template: auto auto 2fr / 1fr 1fr;
   grid-gap: 20px 10%;
   justify-content: center;
   align-content: center;
@@ -74,7 +76,6 @@ figure.musician-img figcaption {
 }
 
 .musicians .list-name {
-/* .musicians .box-rotate { */
   grid-area: 1 / 2 / 2 / 3;
 }
 
@@ -101,11 +102,6 @@ figure.musician-img figcaption {
   color: var(--black-col);
 }
 
-
-/* .musicians .box-rotate { */
-  /* height: 300px; */
-/* } */
-
 .musicians .list-name {
   display: grid;
   grid-template-columns: 5fr 1fr 5fr;
@@ -113,15 +109,16 @@ figure.musician-img figcaption {
   align-content: center;
   grid-row-gap: 10px;
   text-transform: uppercase;
-  font-family: var(--lora-family);
+  font-family: var(--oswald-family);
   font-weight: bold;
   font-size: 0.8em;
   color: var(--brown-dark);
   font-weight: bold;
-  background: rgba(255,255,255,0.3);
-  transform: rotate(-90deg);
-  box-shadow: 0px 0px 80px 30px rgba(255,255,255,.3);
+  background: rgba(255,255,255,.5);
+  /* transform: rotate(-90deg); */
+  box-shadow: 0px 0px 80px 30px rgba(255,255,255,.5);
   border: none;
+  padding: 20px;
 }
 
 .musicians .list-name .name {
@@ -152,8 +149,6 @@ figure.musician-img figcaption {
 
 .musicians .info h3 {
   font-family: var(--oswald-family);
-  /* margin-top: 150px; */
-  /* margin-bottom: 50px; */
   color: var(--black-col);
   text-align: center;
   font-size: 1.5em;
