@@ -31,9 +31,24 @@ $(document).ready(function(){
     'https://source.unsplash.com/Ufyx8i35-A0/1600x900',//electronics
   ];
 
-  $('.arrow').on('click', (ev)=>{
-    // console.log('click', ev);
+  function UpDownId(upDown, id, max) {
+      if (upDown === 'up'){
+        if (id < max - 1)
+          ++id;
+        else
+          id = 0;
+      } else if (upDown === 'down') {
+        if (id > 0)
+          --id;
+        else
+          id = max - 1;
+      }
+      return id;
+    }
+
+  function changeMusician(ev) {
     let id = ev.currentTarget.id;
+    console.log(id);
     if (id === 'next')
     {
       console.log('next');
@@ -43,25 +58,16 @@ $(document).ready(function(){
       else
         idM = 0;
 
-      $('figure .img').css("background-image",`url(${urlsId[idM]})`);
-
-       $('.list-name .active').removeClass('active');
-       $('.list-name .name').eq(idM).addClass('active');
-       $('.list-name .circle').eq(idM).addClass('active');
-       $('.list-name .instrument').eq(idM).addClass('active');
-       console.log($('.list-name .name.active').text());
-       let pair = $('.list-name .name.active').text().split(' ');
-       console.log(pair[0], pair[1]);
-       $('.fullname .first').text(pair[0]);
-       $('.fullname .last').text(pair[1]);
-
-       // $('figure .img').removeClass('img').addClass('img');
-
-      $('#about figure.musician-img').animate({
-        transform: 'translateX(100px)'
-      }, 1000, ()=>{
-        console.log('#about figure animate');
-      })
+        $('figure .img').css("background-image",`url(${urlsId[idM]})`);
+        $('.list-name .active').removeClass('active');
+        $('.list-name .name').eq(idM).addClass('active');
+        $('.list-name .circle').eq(idM).addClass('active');
+        $('.list-name .instrument').eq(idM).addClass('active');
+        console.log($('.list-name .name.active').text());
+        let pair = $('.list-name .name.active').text().split(' ');
+        console.log(pair[0], pair[1]);
+        $('.fullname .first').text(pair[0]);
+        $('.fullname .last').text(pair[1]);
     }
     else if (id === 'prev')
     {
@@ -70,5 +76,9 @@ $(document).ready(function(){
     else {
       console.log('Not known id');
     }
-  })
+  };
+
+  $('#next').on('click', ev => changeMusician(ev));
+  $('#prev').on('click', ev => changeMusician(ev));
+
 });

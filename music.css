@@ -54,14 +54,14 @@ section.music {
   --track-position: 35%;
 }
 
-.player .prev {
+.player .arrow {
   cursor: pointer;
   width: 0;
   border: var(--player-arrow) solid rgba(0,0,0,0);
   border-right: calc(var(--player-arrow)*2) solid var(--brown-light);
 }
 
-.player .prev::before {
+.player .arrow::before {
   cursor: pointer;
   position: absolute;
   top: 0;
