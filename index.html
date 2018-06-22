@@ -104,13 +104,26 @@
           <div class="listen"><button>Listen</button></div>
           <div class="buy"><button>Buy</button></div>
         </div>
-        <div class="player">
+        <div class="song">
           <h2>Now playing</h2>
           <h4>Suprise Without Flaws</h4>
           <h5>01. Clouds In The Forest</h5>
-          <audio src="./music/westworld/2016 - Westworld/01. Main Title Theme - Westworld.mp3" controls id="audioPlayer" loop>
-            Sorry, your browser doesn't support html5!
-          </audio>
+          <div class="player">
+            <div class="prev"></div>
+            <div class="control">
+              <div class="play"></div>
+              <div class="pause"></div>
+            </div>
+            <div class="next"><div class="prev"></div></div>
+            <div class="track">
+              <div class="progress"></div>
+              <div class="current"></div>
+            </div>
+            <audio  src="./music/westworld/2016 - Westworld/01. Main Title Theme - Westworld.mp3" id="audioPlayer" loop>
+              <source  type="audio.mpeg">
+                Sorry, your browser doesn't support html5!
+              </audio>
+          </div>
         </div>
         <div class="player-list">
           <h4>Suprise Without Flaws</h4>
@@ -194,5 +207,6 @@
   </footer>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="main.js" charset="utf-8"></script>
+  <script src="player.js" charset="utf-8"></script>
 </body>
 </html>
