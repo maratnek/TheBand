@@ -35,7 +35,7 @@ section.music {
   position: relative;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
@@ -78,12 +78,12 @@ section.music {
 
 .player .control {
   position: relative;
+  justify-self: center;
 }
 
 .player .control .play {
   position: absolute;
   cursor: pointer;
-  width: 0;
   border: var(--player-arrow) solid rgba(0,0,0,0);
   border-right: calc(var(--player-arrow)*2) solid var(--brown-light);
   transform: rotate(180deg);
@@ -96,17 +96,21 @@ section.music {
   content: '';
   height: calc(var(--player-arrow)*2);
   width: var(--player-arrow);
+  width: calc(var(--player-arrow)*4/3);
+}
+
+.player .control .pause::after,
+.player .control .pause::before {
+  position: absolute;
+  content: '';
+  cursor: pointer;
+  height: calc(var(--player-arrow)*2);
   width: calc(var(--player-arrow)/1.5);
   background-color: var(--brown-light);
 }
 
 .player .control .pause::before {
-  position: absolute;
-  content: '';
-  left: var(--player-arrow);
-  height: calc(var(--player-arrow)*2);
-  width: calc(var(--player-arrow)/1.5);
-  background-color: var(--brown-light);
+  transform: translateX(var(--player-arrow));
 }
 
 .player .track {
