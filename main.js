@@ -24,10 +24,11 @@ $(document).ready(function(){
 
   let idM = 0;
   let urlsId = [
-    'https://source.unsplash.com/JTa5MN7ObbM/1600x900',
-    'https://source.unsplash.com/7IGBfd3FDtQ/1600x900',
-    'https://source.unsplash.com/wfBXHhMG67o/1600x900',
-
+    'https://source.unsplash.com/JTa5MN7ObbM/1600x900',//vocalist
+    'https://source.unsplash.com/7IGBfd3FDtQ/1600x900',//guitar
+    'https://source.unsplash.com/NDGzkMIasJQ/1600x900',//bass
+    'https://source.unsplash.com/l_fdrk2OyJY/1600x900',//drums
+    'https://source.unsplash.com/Ufyx8i35-A0/1600x900',//electronics
   ];
 
   $('.arrow').on('click', (ev)=>{
@@ -37,18 +38,17 @@ $(document).ready(function(){
     {
       console.log('next');
       console.log(idM);
-      if (idM + 1 < urlsId.length) {
+      if (idM < urlsId.length - 1)
         ++idM;
-        $('figure .img').css("background-image",`url(${urlsId[idM]})`);
-      } else {
+      else
         idM = 0;
-        $('figure .img').css("background-image",`url(${urlsId[idM]})`);
-      }
+
+      $('figure .img').css("background-image",`url(${urlsId[idM]})`);
 
        $('.list-name .active').removeClass('active');
-       $('.list-name .name').eq(idM + 1).addClass('active');
-       $('.list-name .circle').eq(idM + 1).addClass('active');
-       $('.list-name .instrument').eq(idM + 1).addClass('active');
+       $('.list-name .name').eq(idM).addClass('active');
+       $('.list-name .circle').eq(idM).addClass('active');
+       $('.list-name .instrument').eq(idM).addClass('active');
        console.log($('.list-name .name.active').text());
        let pair = $('.list-name .name.active').text().split(' ');
        console.log(pair[0], pair[1]);
