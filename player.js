@@ -73,4 +73,8 @@ $(document).ready(()=>{
 
   $('.control').on('click',ev => playPause(ev.target.className));
 
+  // Mouse events
+
+  $('#audioPlayer').on('click', (ev) => changeTrack(ev));
+
 });
