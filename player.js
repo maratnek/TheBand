@@ -1,3 +1,5 @@
+import {UpDownId} from './main.js';
+
 $(document).ready(()=>{
 
   let sost = 'pause';
@@ -5,21 +7,7 @@ $(document).ready(()=>{
 
   let player = $('#audioPlayer').get(0);
   console.log('player', player);
-  function UpDownId(upDown, id, max) {
-    console.log(upDown, id, max);
-      if (upDown === "up"){
-        if (id < max - 1)
-          ++id;
-        else
-          id = 0;
-      } else if (upDown === "down") {
-        if (id > 0)
-          --id;
-        else
-          id = max - 1;
-      }
-      return id;
-    }
+
 
   let playlist = [
       "./music/westworld/2018 - Runaway/01. Runaway.mp3",
@@ -29,23 +17,24 @@ $(document).ready(()=>{
   ];
 
   function changeTrack(ev) {
-    let btnName = ev.currentTarget.className;
-    console.log(btnName);
-    if (btnName === 'next')
+    // let btnName = ev.currentTarget.className;
+    let id = ev.currentTarget.id;
+    console.log(id);
+    if (id == 'nextTrack')
       currentTrack = UpDownId('up',currentTrack, playlist.length);
-    else (btnName === 'prev')
+    else if(id == 'prevTrack')
       currentTrack = UpDownId('down',currentTrack, playlist.length);
+    console.log('Current track', currentTrack);
 
     player.src = playlist[currentTrack];
     playPause(sost);
   }
 
-  $('.player .next').on('click', ev => changeTrack(ev));
-  $('.player .prev').on('click', ev => changeTrack(ev));
+  $('#nextTrack').on('click', (ev) => changeTrack(ev));
+  $('#prevTrack').on('click', (ev) => changeTrack(ev));
 
   // root change
   function positionChange(trackPosition) {
-    // let trackPosition = 50;
     $(':root').css('--track-position', `${trackPosition}%`);
   }
 
@@ -54,7 +43,6 @@ $(document).ready(()=>{
     let interv = setInterval(function () {
       if (player && player.currentTime && player.duration)
       {
-        // console.log(player.currentTime, player.duration);
         positionChange(player.currentTime/player.duration*100);
       }
     }, 500);

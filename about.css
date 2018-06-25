@@ -13,7 +13,7 @@ section.about .container {
   height: 50px;
 }
 
-.arrow-right img{
+.arrow-right {
   transform: rotate(180deg);
 }
 

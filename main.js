@@ -1,3 +1,27 @@
+export function UpDownId(upDown, id, max) {
+  console.log(upDown, id, max);
+  if (upDown == "up") {
+    if (id < max - 1) {
+      ++id;
+    } else {
+      id = 0;
+    }
+  } else if (upDown == "down") {
+    if (id > 0) {
+      --id;
+    } else {
+      id = max - 1;
+    }
+  }
+  return id;
+};
+
+
+// module.exports = {
+  // UpDownId: UpDownId
+// };
+
+
 $(document).ready(function(){
   // Add smooth scrolling to all links
   $("header nav a").on('click', function(event) {
@@ -31,20 +55,8 @@ $(document).ready(function(){
     'https://source.unsplash.com/Ufyx8i35-A0/1600x900',//electronics
   ];
 
-  function UpDownId(upDown, id, max) {
-      if (upDown === 'up'){
-        if (id < max - 1)
-          ++id;
-        else
-          id = 0;
-      } else if (upDown === 'down') {
-        if (id > 0)
-          --id;
-        else
-          id = max - 1;
-      }
-      return id;
-    }
+
+
 
   function changeMusician(ev) {
     let id = ev.currentTarget.id;
@@ -80,5 +92,6 @@ $(document).ready(function(){
 
   $('#next').on('click', ev => changeMusician(ev));
   $('#prev').on('click', ev => changeMusician(ev));
+
 
 });

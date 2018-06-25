@@ -34,14 +34,16 @@ section.music {
 .player {
   position: relative;
   width: 100%;
+  max-width: 350px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: 0px;
+  grid-row-gap: 30px;
+  margin: 30px auto;
   /* align-items: center; */
-  /* align-content: center; */
-  /* justify-content: center; */
+  align-content: center;
+  justify-content: center;
   /* justify-items: center; */
 }
 
@@ -50,8 +52,8 @@ section.music {
 }
 
 :root {
-  --player-arrow: 16px;
-  --track-position: 35%;
+  --player-arrow: 10px;
+  --track-position: 0;
 }
 
 .player .arrow {
@@ -67,14 +69,13 @@ section.music {
   top: 0;
   left: calc(var(--player-arrow)*2);
   content: '';
-  /* width: 0; */
   border: var(--player-arrow) solid rgba(0,0,0,0);
   border-right: calc(var(--player-arrow)*2) solid var(--brown-light);
 }
 
-.player .next {
+/* .player .next {
   transform: rotate(180deg);
-}
+} */
 
 .player .control {
   position: relative;
