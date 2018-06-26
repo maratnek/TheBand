@@ -21,15 +21,23 @@
     {"name":"Courd","lastname":"Shead", "image":"https://source.unsplash.com/Ufyx8i35-A0/1600x900", "instrument":"electronics"}
   ],
   "album list": [
-    "2018 - Runaway.mp3",
-    "01. Seven Nation Army.mp3",
-    "02. Paint It Black.mp3",
-    "01. Main Title Theme - Westworld.mp3"
+    {"name":"2016 - Westworld", "year":"2016"},
+    {"name":"2018 - Runaway", "year":"2018"},
+    {"name":"2018 - Seven Nation Army", "year":"2018"},
+    {"name":"2018 - Akane No Mai", "year":"2018"}
   ],
   "track list": [
-      {"url":"./music/westworld/2018 - Runaway/01. Runaway.mp3"},
-      {"url":"./music/westworld/2018 - Seven Nation Army/01. Seven Nation Army.mp3"},
-      {"url":"./music/westworld/2018 - Akane No Mai/02. Paint It Black.mp3"},
-      {"url":"./music/westworld/2016 - Westworld/01. Main Title Theme - Westworld.mp3"}
+    [
+      "01. Main Title Theme - Westworld.mp3"
+    ],
+    [
+      "01. Runaway.mp3"
+    ],
+    [
+      "01. Seven Nation Army.mp3"
+    ],
+    [
+      "02. Paint It Black.mp3"
     ]
+  ]
 }

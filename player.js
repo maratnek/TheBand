@@ -4,6 +4,7 @@ $(document).ready(()=>{
 
   let sost = 'pause';
   let currentTrack = 0;
+  let currentAlbum = 0;
 
   let player = $('#audioPlayer').get(0);
   console.log('player', player);
@@ -111,10 +112,40 @@ $(document).ready(()=>{
   .then(function(myJson) {
     console.log(myJson);
     console.log(myJson["musician list"]);
-    myJson["track list"].map(mus => console.log(mus));
-    // for (let mus of myJson["musician list"]) {
-        // console.log(mus);
-    // }
+
+    if (myJson["album list"].length){
+      let htmlAlbums = "";
+      myJson["album list"].map(alb => {
+        htmlAlbums += `<div class="name">${alb.name}</div>
+        <div class="year">${alb.year}</div>
+        <div class="listen"><button>Listen</button></div>
+        <div class="buy"><button>Buy</button></div>`;
+      });
+      // currentTrack = 0;
+      if (myJson["track list"].length){
+        let htmlTracks = "";
+        myJson["track list"][currentTrack].map( (mus,index) => {
+          console.log(mus);
+        htmlTracks += `
+          <li>
+              <div class="triangle"></div>
+              <div class="num">${index}.</div>
+              <h5>${mus}</h5>
+              <div class="point">......................</div>
+              <div class="long">3:20</div>
+          </li>
+        `;
+        });
+        $('#playerList h4').html(myJson["album list"][currentTrack].name);
+        $('#playerList ul').html(htmlTracks);
+
+      }else{
+        $('#playerList').html("Not tracks");
+      }
+      $('#discography').html(htmlAlbums);
+    }else{
+      $('#discography').html("Not albums");
+    }
   });
 
 });
