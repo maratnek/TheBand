@@ -1,0 +1,33 @@
+{
+  "array": [
+    1,
+    2,
+    3
+  ],
+  "boolean": true,
+  "null": null,
+  "number": 123,
+  "object": {
+    "a": "b",
+    "c": "d",
+    "e": "f"
+  },
+  "string": "Hello World",
+  "musician list": [
+    {"name":"Courd","lastname":"Shead", "image":"https://source.unsplash.com/JTa5MN7ObbM/1600x900", "instrument":"vocalist"},
+    {"name":"Courd","lastname":"Shead", "image":"https://source.unsplash.com/7IGBfd3FDtQ/1600x900", "instrument":"guitar"},
+    {"name":"Courd","lastname":"Shead", "image":"https://source.unsplash.com/NDGzkMIasJQ/1600x900", "instrument":"bass"},
+    {"name":"Courd","lastname":"Shead", "image":"https://source.unsplash.com/l_fdrk2OyJY/1600x900", "instrument":"drums"},
+    {"name":"Courd","lastname":"Shead", "image":"https://source.unsplash.com/Ufyx8i35-A0/1600x900", "instrument":"electronics"}
+  ],
+  "album list": [
+    "2018 - Runaway",
+
+  ],
+  "track list": [
+      {"url":"./music/westworld/2018 - Runaway/01. Runaway.mp3"},
+      {"url":"./music/westworld/2018 - Seven Nation Army/01. Seven Nation Army.mp3"},
+      {"url":"./music/westworld/2018 - Akane No Mai/02. Paint It Black.mp3"},
+      {"url":"./music/westworld/2016 - Westworld/01. Main Title Theme - Westworld.mp3"}
+    ]
+}

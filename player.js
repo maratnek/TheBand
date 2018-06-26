@@ -77,4 +77,44 @@ $(document).ready(()=>{
 
   $('#audioPlayer').on('click', (ev) => changeTrack(ev));
 
+  // Track position
+  $('.track').on('click',function(ev) {
+
+    console.log(ev.currentTarget.clientWidth);
+    console.log('click',ev);
+    console.log('screen',ev.screenX);
+    console.log('client',ev.clientX);
+    console.log('offset',ev.offsetX);
+    console.log(ev.screenX - ev.clientX);
+    console.log(ev.pageX);
+    let place = Math.floor(ev.offsetX / ev.currentTarget.clientWidth * 100);
+    console.log('% - ',  place);
+    positionChange(place);
+
+    if (player)
+    {
+      player.currentTime = player.duration * place / 100;
+      // positionChange(player.currentTime/player.duration*100);
+    }
+
+  });
+  // $('.track').on('mousedown', ev => console.log('mousedown',ev));
+  // $('.track').on('mouseup', ev => console.log('mouseup',ev));
+  // $('.track').on('mouseover', ev => console.log('mouseover',ev));
+  // $('.track').on('mouseout', ev => console.log('mouseout',ev));
+  // $('.track').on('mousemove', ev => console.log('mousemove',ev));
+
+  fetch('./resource.json')
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    console.log(myJson);
+    console.log(myJson["musician list"]);
+    myJson["track list"].map(mus => console.log(mus));
+    // for (let mus of myJson["musician list"]) {
+        // console.log(mus);
+    // }
+  });
+
 });

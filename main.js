@@ -93,9 +93,5 @@ $(document).ready(function(){
   $('#next').on('click', ev => changeMusician(ev));
   $('#prev').on('click', ev => changeMusician(ev));
 
-  $('.track').on('click', ev => console.log('click',ev));
-  $('.track').on('mousedown', ev => console.log('mousedown',ev));
-  $('.track').on('mouseover', ev => console.log('mouseover',ev));
-  $('.track').on('mousemove', ev => console.log('mousemove',ev));
 
 });
