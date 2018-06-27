@@ -2,6 +2,15 @@ section.music {
   background: white;
 }
 
+.music h2 {
+  font-family: var(--oswald-family);
+}
+
+.music h4 {
+  font-family: var(--oswald-family);
+  font-weight: lighter;
+}
+
 .album {
   padding: 20px 40px;
   display: grid;
@@ -16,19 +25,52 @@ section.music {
   grid-area: 2 / 1 / 3 / 2;
 }
 
-.song h2 {
-  /* font-family: var(--lora-family); */
+.discography .list {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+}
+
+.discography .list button {
+  background: var(--brown-light);
+  color: var(--brown-col);
+  padding: 0.1em 1em;
+  border: none;
+  text-transform: uppercase;
   font-family: var(--oswald-family);
 }
 
-.song h4 {
-  font-family: var(--oswald-family);
-  font-weight: lighter;
+.discography .list .buy button {
+  background: var(--brown-col);
+  color: var(--brown-light);
 }
 
-.song h5 {
+.player-list ul {
+  list-style: none;
+}
+
+.player-list li {
+  width: 100%;
+  display: flex;
+  justify-content: ;
+}
+
+.player-list li h5{
+}
+
+.player-list li .long {
+  align-self: flex-end;
+}
+
+.player-list li .long {
+  align-self: flex-end;
+}
+
+
+.song h5, .player-list h5 {
   font-family: var(--lora-family);
   color: var(--brown-col);i
+  font-weight: 400;
+  font-style: italic;
 }
 
 .player {
@@ -52,8 +94,12 @@ section.music {
 }
 
 :root {
-  --player-arrow: 10px;
+  --player-arrow: 10px;// influence on the player
   --track-position: 0;
+}
+
+.circle {
+  
 }
 
 .player .arrow {
@@ -72,10 +118,6 @@ section.music {
   border: var(--player-arrow) solid rgba(0,0,0,0);
   border-right: calc(var(--player-arrow)*2) solid var(--brown-light);
 }
-
-/* .player .next {
-  transform: rotate(180deg);
-} */
 
 .player .control {
   position: relative;

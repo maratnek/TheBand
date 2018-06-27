@@ -124,22 +124,28 @@ $(document).ready(()=>{
       let htmlAlbums = "";
       myJson.dirs.forEach((alb,index) => {
         if (alb.albumName) {
-          htmlAlbums += `<div class="name">${alb.albumName}</div>
+          htmlAlbums += `
+          <div class="name"><h4>${alb.albumName}</h4></div>
+          <div class="circle"></div>
           <div class="year">2016</div>
-          <div class="listen"><button id="${index}">Listen</button></div>
-          <div class="buy"><button>Buy</button></div>`;
+          <div class="listen">
+            <button id="${index}">Listen</button>
+          </div>
+          <div class="buy">
+            <button id="${index}">Buy</button>
+          </div>`;
         }
       });
 
       currentAlbum = myJson.dirs[currentAlb];
       playlistCreate(currentAlbum);
-      $('#discography').html(htmlAlbums);
+      $('#discography .list').html(htmlAlbums);
       $('#discography .listen button').click((ev)=>{
         console.log(ev.currentTarget.id);
         changePlaylist(ev.currentTarget.id);
       });
     }else{
-      $('#discography').html("Not albums");
+      $('#discography .list').html("Not albums");
     }
 
   });
@@ -169,11 +175,11 @@ $(document).ready(()=>{
           console.log(mus);
           htmlTracks += `
           <li>
-          <div class="triangle"></div>
-          <div class="num">${index}.</div>
-          <h5>${mus}</h5>
-          <div class="point">......................</div>
-          <div class="long">3:20</div>
+            <div class="triangle"></div>
+            <div class="num">${index}.</div>
+            <h5>${mus}</h5>
+            <div class="point">......................</div>
+            <div class="long">3:20</div>
           </li>
           `;
         });
