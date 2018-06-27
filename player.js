@@ -4,30 +4,33 @@ $(document).ready(()=>{
 
   let sost = 'pause';
   let currentTrack = 0;
-  let currentAlbum = 0;
+  let currentAlb = 0;
 
   let player = $('#audioPlayer').get(0);
   console.log('player', player);
 
+  let currentAlbum = {};
 
   let playlist = [
-      "./music/westworld/2018 - Runaway/01. Runaway.mp3",
-      "./music/westworld/2018 - Seven Nation Army/01. Seven Nation Army.mp3",
-      "./music/westworld/2018 - Akane No Mai/02. Paint It Black.mp3",
-      "./music/westworld/2016 - Westworld/01. Main Title Theme - Westworld.mp3",
+    "music/westworld/2018 - Runaway/01. Runaway.mp3",
+    "music/westworld/2018 - Seven Nation Army/01. Seven Nation Army.mp3",
+    "music/westworld/2018 - Akane No Mai/02. Paint It Black.mp3",
+    "music/westworld/2016 - Westworld/01. Main Title Theme - Westworld.mp3",
   ];
 
+
+  console.log($('#discography .listen button'));
+
   function changeTrack(ev) {
-    // let btnName = ev.currentTarget.className;
     let id = ev.currentTarget.id;
     console.log(id);
     if (id == 'nextTrack')
-      currentTrack = UpDownId('up',currentTrack, playlist.length);
+    currentTrack = UpDownId('up',currentTrack, playlist.length);
     else if(id == 'prevTrack')
-      currentTrack = UpDownId('down',currentTrack, playlist.length);
+    currentTrack = UpDownId('down',currentTrack, playlist.length);
     console.log('Current track', currentTrack);
 
-    player.src = playlist[currentTrack];
+    playerUpdate();
     playPause(sost);
   }
 
@@ -59,16 +62,16 @@ $(document).ready(()=>{
 
     if (sost === 'play')
     {
-    player.play();
+      player.play();
       $('.control .play').hide(timeAnimate);
       $('.control .pause').show(timeAnimate);
       updateInterval = positionUpdate(player);
     } else {
-    player.pause();
+      player.pause();
       $('.control .play').show(timeAnimate);
       $('.control .pause').hide(timeAnimate);
       if (updateInterval)
-        clearInterval(updateInterval);
+      clearInterval(updateInterval);
     }
   };
 
@@ -105,47 +108,81 @@ $(document).ready(()=>{
   // $('.track').on('mouseout', ev => console.log('mouseout',ev));
   // $('.track').on('mousemove', ev => console.log('mousemove',ev));
 
-  fetch('./resource.json')
+  let albums = {};
+
+  fetch('./new.json')
   .then(function(response) {
     return response.json();
   })
   .then(function(myJson) {
     console.log(myJson);
-    console.log(myJson["musician list"]);
+    albums = myJson;
+    // console.log(myJson["musician list"]);
+    let path = 'music/westworld';
 
-    if (myJson["album list"].length){
+    if (myJson["dirs"] && myJson["dirs"].length){
       let htmlAlbums = "";
-      myJson["album list"].map(alb => {
-        htmlAlbums += `<div class="name">${alb.name}</div>
-        <div class="year">${alb.year}</div>
-        <div class="listen"><button>Listen</button></div>
-        <div class="buy"><button>Buy</button></div>`;
+      myJson.dirs.forEach((alb,index) => {
+        if (alb.albumName) {
+          htmlAlbums += `<div class="name">${alb.albumName}</div>
+          <div class="year">2016</div>
+          <div class="listen"><button id="${index}">Listen</button></div>
+          <div class="buy"><button>Buy</button></div>`;
+        }
       });
-      // currentTrack = 0;
-      if (myJson["track list"].length){
-        let htmlTracks = "";
-        myJson["track list"][currentTrack].map( (mus,index) => {
-          console.log(mus);
-        htmlTracks += `
-          <li>
-              <div class="triangle"></div>
-              <div class="num">${index}.</div>
-              <h5>${mus}</h5>
-              <div class="point">......................</div>
-              <div class="long">3:20</div>
-          </li>
-        `;
-        });
-        $('#playerList h4').html(myJson["album list"][currentTrack].name);
-        $('#playerList ul').html(htmlTracks);
 
-      }else{
-        $('#playerList').html("Not tracks");
-      }
+      currentAlbum = myJson.dirs[currentAlb];
+      playlistCreate(currentAlbum);
       $('#discography').html(htmlAlbums);
+      $('#discography .listen button').click((ev)=>{
+        console.log(ev.currentTarget.id);
+        changePlaylist(ev.currentTarget.id);
+      });
     }else{
       $('#discography').html("Not albums");
     }
+
   });
+
+  function changePlaylist(albumId) {
+      currentAlbum = albums.dirs[albumId];
+      playlistCreate(currentAlbum);
+      currentTrack = 0;
+      playerUpdate();
+      playPause('play');
+
+  }
+
+  function playerUpdate() {
+    console.log(currentAlbum);
+    player.src = currentAlbum.path + '/' + currentAlbum['track list'][currentTrack];
+    $('.song h4').html(currentAlbum.albumName);
+    $('.song h5').html(currentAlbum['track list'][currentTrack]);
+  }
+
+  function playlistCreate(alb) {
+      if (alb && alb['track list'] && alb['track list'].length){
+        let htmlTracks = "";
+        playlist = [];
+        alb['track list'].forEach( (mus,index) => {
+          playlist.push(alb.path + '/' + mus);
+          console.log(mus);
+          htmlTracks += `
+          <li>
+          <div class="triangle"></div>
+          <div class="num">${index}.</div>
+          <h5>${mus}</h5>
+          <div class="point">......................</div>
+          <div class="long">3:20</div>
+          </li>
+          `;
+        });
+        console.log(alb.albumName);
+        $('#playerList h4').html(alb.albumName);
+        $('#playerList ul').html(htmlTracks);
+      }else{
+        $('#playerList').html("Not tracks");
+      }
+  }
 
 });
