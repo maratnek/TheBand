@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>The Band</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section class="header">
+    <div class="container">
+      <header>
+        <h1>Admin Panel</h1>
+        <input type="file" id="audioFile" webkitdirectory directory multiple>
+      </header>
+    </div><!-- Container -->
+  </section>
+
+  <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+
+  <script>
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAbRIahEJ62ow1ZXbEIJM0EPMOxqYK3VTE",
+    authDomain: "the-band-music.firebaseapp.com",
+    databaseURL: "https://the-band-music.firebaseio.com",
+    projectId: "the-band-music",
+    storageBucket: "the-band-music.appspot.com",
+    messagingSenderId: "241471440965"
+  };
+  const theBandApp = firebase.initializeApp(config);
+  const storage = theBandApp.storage();
+  const storageRef = storage.ref();
+  const provider = new firebase.auth.GoogleAuthProvider();
+  let credential = provider.credential(null, "241471440965-bui503gldf3pqposnqp0u0855g24ibah.apps.googleusercontent.com");
+  firebase.auth().signInAndRetrieveDataWithCredential(credential);
+
+  firebase.auth().signOut().then(function() {
+    console.log('Sign-out successful.');
+  }).catch(function(error) {
+    console.log('An error happened.');
+  });
+  // upload file
+  const audioFile = document.getElementById('audioFile');
+
+
+  audioFile.addEventListener('change',(ev)=>{
+    let txt = '';
+    console.log("value", audioFile.value);
+    console.log("type", audioFile.type);
+    console.log("required", audioFile.required);
+    console.log("dirname", audioFile.dirname);
+    if ('files' in audioFile){
+      if (audioFile.files.length == 0)
+      txt = "Select one or more files";
+      else
+      // for (let i = 0; i < audioFile.files.length; i++) {
+      for (let i = 0; i < 1; i++) {
+        txt += "<br><strong>" + (i+1) + ". file</strong><br>";
+        let file = audioFile.files[i];
+        console.log(file);
+        for (let attr in file) {
+          if (attr == "webkitRelativePath")
+          console.log(file[attr].split('/'));
+
+          console.log(attr, "-", file[attr]);
+          txt += ` <span>${attr} -- ${file[attr]}</span>`;
+        }
+        upload(file);
+      }
+    }
+    let header = document.querySelector('header');
+    header.innerHTML += txt;
+  });
+
+  function upload(file){
+    // Create the file metadata
+    var metadata = {
+      contentType: file.type
+    };
+
+    // Upload file and metadata to the object 'images/mountains.jpg'
+    var uploadTask = storageRef.child('music/' + file.webkitRelativePath).put(file, metadata);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+    function(snapshot) {
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log('Upload is ' + progress + '% done');
+      switch (snapshot.state) {
+        case firebase.storage.TaskState.PAUSED: // or 'paused'
+        console.log('Upload is paused');
+        break;
+        case firebase.storage.TaskState.RUNNING: // or 'running'
+        console.log('Upload is running');
+        break;
+      }
+    }, function(error) {
+
+      // A full list of error codes is available at
+      // https://firebase.google.com/docs/storage/web/handle-errors
+      switch (error.code) {
+        case 'storage/unauthorized':
+        console.log('unauthorized');
+        // User doesn't have permission to access the object
+        break;
+        case 'storage/canceled':
+        console.log('canceled');
+        // User canceled the upload
+        break;
+        case 'storage/unknown':
+        console.log('unknown');
+        // Unknown error occurred, inspect error.serverResponse
+        break;
+      }
+    }, function() {
+      // Upload completed successfully, now we can get the download URL
+      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        console.log('File available at', downloadURL);
+      });
+    });
+
+  }
+
+
+</script>
+</body>
+</html>
