@@ -1,0 +1,14 @@
+section.tours, section.tours .container {
+  background: var(--brown-light);
+}
+
+.tours h2{
+  font-family: var(--oswald-family);
+  font-weight: lighter;
+  text-align: center;
+}
+
+.tours .container {
+  display: flex;
+  flex-direction: column;
+}
