@@ -4,11 +4,13 @@ section.music {
 
 .music h2 {
   font-family: var(--oswald-family);
+  font-weight: lighter;
 }
 
 .music h4 {
   font-family: var(--oswald-family);
   font-weight: lighter;
+  font-size: 1em;
 }
 
 .album {

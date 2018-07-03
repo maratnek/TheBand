@@ -18,7 +18,7 @@
             <li><a href="#music">Music</a></li>
             <li><a href="#tours">Tours</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="admin.html">Admin</a></li>
+            <!-- <li><a href="admin.html">Admin</a></li> -->
           </ul>
         </nav>
         <div class="h1">
@@ -114,7 +114,6 @@
         <div id="playerList" class="player-list">
           <h4>Suprise Without Flaws</h4>
           <ul>
-
           </ul>
         </div>
       </div>
@@ -123,13 +122,28 @@
 
 
   <section id="tours" class="tours">
-    <div class="container"></div>
+    <div class="container">
+      <h2>Tour dates</h2>
+      <div id="tabloList" class="tabloList">
+        <div class="tour"></div>
+        <div class="date"></div>
+        <div class="city"></div>
+        <div class="contry"></div>
+      </div>
+      <div class="ticketList">
+        <div class="date"></div>
+        <h4></h4>
+        <button>Buy ticket</button>
+      </div>
+    </div>
   </section>
 
   <footer id="contact" class="contact">
     <div class="container"></div>
   </footer>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+  <script type="module" src="fb_func.js" charset="utf-8"></script>
   <script type="module" src="main.js" charset="utf-8"></script>
   <script type="module" src="player.js" charset="utf-8"></script>
 </body>
