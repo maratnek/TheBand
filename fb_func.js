@@ -1,18 +1,4 @@
 window.onload = ()=>{
-  console.log('window load');
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyAbRIahEJ62ow1ZXbEIJM0EPMOxqYK3VTE",
-    authDomain: "the-band-music.firebaseapp.com",
-    databaseURL: "https://the-band-music.firebaseio.com",
-    projectId: "the-band-music",
-    storageBucket: "the-band-music.appspot.com",
-    messagingSenderId: "241471440965"
-  };
-  const theBandApp = firebase.initializeApp(config);
-  const db = theBandApp.firestore();
-  const dbSettings = {timestampsInSnapshots: true};
-  db.settings(dbSettings);
 
   db.collection("tours").get().then((querySnapshot) => {
     let tourList = document.getElementById('tabloList');
