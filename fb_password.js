@@ -29,14 +29,14 @@ export function updateTour(docElementId){
       console.log(doc.data());
       let data = doc.data();
       let list = "";
-      list += `<span>${data.name}</span>`;
+      list += `<div class="state">${data.name}, `;
       let date = new Date(data.date.seconds*1000);
       date = date.toLocaleDateString('en-US',{year:'numeric', month: '2-digit', day: '2-digit'})
       .replace(/(\d+)\/(\d+)\/(\d+)/,'$2/$1/$3');
       console.log('Date: ',date);
-      list += `<span>${date}</span>`;
-      list += `<span>${data.city}</span>`;
-      list += `<span>${data.country}</span>`;
+      list += `${date}</div>`;
+      list += `<div class="place">${data.city}, `;
+      list += `${data.country}</div>`;
       li += `<li>${list}</li>`;
 
     });

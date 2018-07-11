@@ -12,3 +12,65 @@ section.tours, section.tours .container {
   display: flex;
   flex-direction: column;
 }
+
+.tours .tabloList {
+  font-family: var(--lora-family);
+  color: var(--brown-col);
+  font-weight: bold;
+  text-transform: uppercase;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+}
+
+.tours #tabloList {
+  transform: rotate(-90deg);
+  position: relative;
+}
+
+.tours .tabloList li {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 10px;
+  position: relative;
+}
+.tours .tabloList li .state, .tours .tabloList li .place {
+  padding: 5px;
+}
+
+.tours .tabloList li::after {
+  content: ' ';
+  position: absolute;
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -16px;
+  background: var(--brown-col);
+}
+
+.tours .tabloList li::before {
+  content: ' ';
+  position: absolute;
+  display: block;
+  width: 2px;
+  height: 100%;
+  top: 0%;
+  right: -12px;
+  background: var(--brown-dark);
+}
+
+.arrow img {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
+
+.arrow-right {
+  transform: rotate(180deg);
+}
