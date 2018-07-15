@@ -1,7 +1,7 @@
-import {store, storage, storageRef, updateTour} from "./fb_password.js";
+import {store, storage, storageRef, updateTour, tourList} from "./fb_password.js";
 window.onload = ()=>{
 
-updateTour('tourList');
+updateTour('tourList', tourList);
 
   const form = document.forms.tourData;
 
@@ -11,7 +11,7 @@ updateTour('tourList');
     console.log(form.date.value);
     console.log(form.city.value);
     console.log(form.contry.value);
-    db.collection("tours").doc().set({
+    store.collection("tours").doc().set({
       name: form.name.value,
       date: new Date(form.date.value),
       city: form.city.value,
@@ -19,7 +19,7 @@ updateTour('tourList');
     })
     .then(function() {
       console.log("Document successfully written!");
-      updateTour();
+      updateTour('tourList', tourList);
       form.reset();
     })
     .catch(function(error) {

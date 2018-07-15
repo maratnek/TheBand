@@ -17,12 +17,13 @@ export function UpDownId(upDown, id, max) {
 };
 
 
-import {updateTour} from './fb_password.js';
+import {updateTour, tourList, ticketList} from './fb_password.js';
 
 $(document).ready(function(){
 
 // download tours
-updateTour('tabloList');
+updateTour('tabloList', tourList);
+updateTour('ticketList', ticketList);
 
   // Add smooth scrolling to all links
   $("header nav a").on('click', function(event) {

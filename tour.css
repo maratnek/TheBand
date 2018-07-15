@@ -74,3 +74,100 @@ section.tours, section.tours .container {
 .arrow-right {
   transform: rotate(180deg);
 }
+
+.today {
+  color: var(--black-col);
+}
+
+.tours .tabloList li.today::after {
+  background: var(--black-col);
+}
+
+.yesterday {
+  color: var(--brown-dark);
+}
+
+.tours .tabloList li.yesterday::after {
+  background: var(--brown-dark);
+}
+
+.future {
+  color: var(--brown-col);
+}
+
+.tours .tabloList li.future::after {
+  background: var(--brown-col);
+}
+
+#ticketList {
+  /* background: red; */
+  width: 700px;
+  margin: auto;
+  font-family: var(--oswald-family);
+  height: 200px;
+
+}
+
+#ticketList li {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px dotted var(--brown-col);
+  padding: 10px;
+  color: var(--black-col);
+  /* border-style: dotted; */
+  /* align-items: stretch; */
+}
+
+#ticketList h3.place {
+  text-align: left;
+  padding: 5px;
+  width: 100%;
+  font-weight:lighter;
+  border-left: 4px solid var(--brown-dark);
+}
+
+#ticketList .date {
+  padding: 5px;
+  width: 100px;
+  display: inline-grid;
+  /* grid-template-rows: 2fr 1fr; */
+  grid-template: 1fr 1fr/ 1fr 1fr;
+
+  font-weight: bold;
+}
+
+#ticketList .date span:nth-child(1) {
+  grid-area: 1 / 1 / 3 / 1;
+  /* align-items: center; */
+  align-self: center;
+  /* place-self: stretch center; */
+  /* background: red; */
+  /* color: yellow; */
+  font-size: 2.5em;
+}
+
+#ticketList .date span:nth-child(2) {
+  align-self: end;
+  justify-content: center;
+  text-transform: uppercase;
+  color: red;
+}
+#ticketList .date span:nth-child(3) {
+  align-self: start;
+  justify-content: center;
+  color: yellow;
+}
+
+#ticketList button {
+  width: 200px;
+  border: none;
+  background: var(--brown-col);
+  color: white;
+  font-family: var(--oswald-family);
+  text-transform: uppercase;
+  /* padding: 2px 10px; */
+  margin: 15px 10px;
+  font-size: 1.2em;
+}
