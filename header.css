@@ -50,10 +50,13 @@
   }
 }
 
-nav {
+.nav {
   padding-top: 3em;
   padding-left: 3em;
-  display: block;
+}
+
+nav {
+  /* display: block; */
 }
 
 nav ul {

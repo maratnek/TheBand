@@ -137,8 +137,6 @@ section.tours, section.tours .container {
   border-bottom: 2px dotted var(--brown-col);
   padding: 10px;
   color: var(--black-col);
-  /* border-style: dotted; */
-  /* align-items: stretch; */
 }
 
 #ticketList h3.place {
