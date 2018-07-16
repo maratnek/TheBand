@@ -66,14 +66,18 @@ export function ticketList(querySnapshot, docElementId){
         return;
 
       let time = "";
-      let list = "";
-      list += `<div class="date">`;
       // date = date.toLocaleDateString('en-US',{year:'numeric', month: 'short', day: '2-digit'})
       let month = date.toLocaleDateString('en-US',{ month: 'short' });
       let day = date.toLocaleDateString('en-US',{ day: '2-digit' });
       let year = date.getFullYear();
+      console.log(year);
       // .replace(/(\d+)\/(\d+)\/(\d+)/,'$2/$1/$3');
-      list += `<span>${day}</span><span>${month}</span><span>${year}<span></div>`;
+      let list = "";
+      list += `<div class="date">`;
+      list += `<span>${day}</span>` +
+              `<span>${month}</span>` +
+              `<span>${year}</span>` +
+              `</div>`;
       list += `<h3 class="place">${data.name} // ${data.city}, `;
       list += `${data.country}</h3>`;
       list += `<button>Buy Ticket</button>`;

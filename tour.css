@@ -98,14 +98,35 @@ section.tours, section.tours .container {
 .tours .tabloList li.future::after {
   background: var(--brown-col);
 }
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--brown-dark);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--brown-col);
+}
 
 #ticketList {
   /* background: red; */
   width: 700px;
   margin: auto;
   font-family: var(--oswald-family);
-  height: 200px;
+  height: 150px;
+  overflow-y: scroll;
 
+  margin-bottom: 20px;
 }
 
 #ticketList li {
@@ -129,11 +150,13 @@ section.tours, section.tours .container {
 }
 
 #ticketList .date {
-  padding: 5px;
+  padding-right: 15px;
   width: 100px;
   display: inline-grid;
   /* grid-template-rows: 2fr 1fr; */
-  grid-template: 1fr 1fr/ 1fr 1fr;
+  /* grid-template: 1fr 1fr/ 1fr 1fr; */
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 5px;
 
   font-weight: bold;
 }
@@ -145,22 +168,26 @@ section.tours, section.tours .container {
   /* place-self: stretch center; */
   /* background: red; */
   /* color: yellow; */
-  font-size: 2.5em;
+  font-size: 2.7em;
+  /* background: green; */
 }
 
 #ticketList .date span:nth-child(2) {
   align-self: end;
-  justify-content: center;
+  /* justify-content: center; */
   text-transform: uppercase;
-  color: red;
+  /* color: red; */
+  /* background: blue; */
 }
 #ticketList .date span:nth-child(3) {
   align-self: start;
   justify-content: center;
-  color: yellow;
+  /* color: yellow; */
+  /* background: purple; */
 }
 
 #ticketList button {
+  cursor: pointer;
   width: 200px;
   border: none;
   background: var(--brown-col);
