@@ -1,3 +1,9 @@
+section .container header {
+  background-attachment: fixed;
+  scroll-behavior: smooth;
+  overflow: auto;
+}
+
 .authentication {
   z-index: 1;
   position: fixed;
@@ -53,8 +59,41 @@
   font-size: calc(var(--auth-proportion)*.6);
 }
 
+header h1 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.panel {
+  font-family: var(--oswald-family);
+  background: rgba(255, 255, 255, 0.5);
+  padding: 1em;
+  margin: 2em;
+}
+
+.tourPanel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+}
+
+.tourPanel #tourAdd {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.tourPanel #tourAdd input
+, .tourPanel #tourAdd button
+{
+  padding: 0.5em;
+  margin-bottom: 0.3em;
+  font-size: 1em;
+}
+
 ul#tourList {
   list-style: none;
+  background: white;
 }
 
 #tourList li{

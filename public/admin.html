@@ -14,20 +14,30 @@
       <header>
         <h1>Admin Panel</h1>
 
-        <input type="file" id="audioFile" webkitdirectory directory multiple>
+        <div class="audioPanel panel">
+          <input type="file" id="audioFile" name="files" webkitdirectory directory multiple>
+          <button type="submit" id="download">Download</button>
+          <div class="downloadFiles" id="downloadFiles">
 
-        <div class="tourPanel">
-          <form  id="tourAdd" name="tourData">
-            <input type="text" name="name" value="" required placeholder="Name">
-            <input type="date" name="date" value="" required placeholder="Date">
-            <input type="text" name="city" value="" required placeholder="City">
-            <input type="text" name="contry" value="" required placeholder="Contry">
-            <button type="submit">Add</button>
-          </form>
-          <!-- </div> -->
-          <h2>Tours</h2>
-          <ul id="tourList">
-          </ul>
+          </div>
+        </div>
+
+        <div class="tourPanel panel">
+          <div class="form">
+            <h2>Add tour</h2>
+            <form  id="tourAdd" name="tourData">
+              <input type="text" name="name" value="" required placeholder="Name">
+              <input type="date" name="date" value="" required placeholder="Date">
+              <input type="text" name="city" value="" required placeholder="City">
+              <input type="text" name="contry" value="" required placeholder="Contry">
+              <button type="submit">Add</button>
+            </form>
+          </div>
+          <div class="tourList">
+            <h2>All Tours</h2>
+            <ul id="tourList">
+            </ul>
+          </div>
         </div>
       </header>
     </div><!-- Container -->

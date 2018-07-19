@@ -7,10 +7,6 @@ updateTour('tourList', tourList);
 
   form.addEventListener('submit', (ev)=>{
     ev.preventDefault();
-    console.log(form.name.value);
-    console.log(form.date.value);
-    console.log(form.city.value);
-    console.log(form.contry.value);
     store.collection("tours").doc().set({
       name: form.name.value,
       date: new Date(form.date.value),
@@ -30,33 +26,20 @@ updateTour('tourList', tourList);
 
   // authentication
   /**
-  * Function called when clicking the Login/Logout button.
   */
   // [START buttoncallback]
   function toggleSignIn() {
     if (!firebase.auth().currentUser) {
-      // [START createprovider]
       var provider = new firebase.auth.GoogleAuthProvider();
-      // [END createprovider]
-      // [START addscopes]
       provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-      // [END addscopes]
-      // [START signin]
       firebase.auth().signInWithPopup(provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
         var token = result.credential.accessToken;
-        // The signed-in user info.
         var user = result.user;
-        // [START_EXCLUDE]
-        // document.getElementById('quickstart-oauthtoken').textContent = token;
-        // [END_EXCLUDE]
       })
       .catch((error) => {
-        // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        // The email of the user's account used.
         var email = error.email;
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
@@ -121,44 +104,78 @@ updateTour('tourList', tourList);
 
   // upload file
   const audioFile = document.getElementById('audioFile');
+  const download = document.getElementById('download');
+
+  download.style.display = 'none';
+  download.addEventListener('click',(ev)=>{
+    if ('files' in audioFile){
+      if (audioFile.files.length == 0)
+        console.log("Select one or more files");
+      else
+      {
+        for (let i = 0; i < audioFile.files.length; i++)
+          upload(file);
+      }
+    }
+  });
 
   audioFile.addEventListener('change',(ev)=>{
     let txt = '';
-    console.log("value", audioFile.value);
-    console.log("type", audioFile.type);
-    console.log("required", audioFile.required);
-    console.log("dirname", audioFile.dirname);
     if ('files' in audioFile){
       if (audioFile.files.length == 0)
-      txt = "Select one or more files";
+        txt = "Select one or more files";
       else
-      // for (let i = 0; i < audioFile.files.length; i++) {
-      for (let i = 0; i < 1; i++) {
-        txt += "<br><strong>" + (i+1) + ". file</strong><br>";
-        let file = audioFile.files[i];
-        console.log(file);
-        for (let attr in file) {
-          if (attr == "webkitRelativePath")
-          console.log(file[attr].split('/'));
+      {
+        for (let i = 0; i < audioFile.files.length; i++) {
+          let file = audioFile.files[i];
+          console.log(file);
+          txt += `<h3><strong>${i+1} . file  -- </strong>${file["name"]}</h3>`;
+          txt += `<span>Last Modifide -- ${file["lastModifiedDate"]}</span>`;
+          txt += `<span>Relative Path -- ${file["webkitRelativePath"]}</span>`;
+          txt += `<span>Size -- ${file["size"]}</span>`;
+          txt += `<span>Type -- ${file["type"]}</span>`;
+          // if (file["webkitRelativePath"] != undefined)
+            // console.log(file["webkitRelativePath"].split('/'));
 
-          console.log(attr, "-", file[attr]);
-          txt += ` <span>${attr} -- ${file[attr]}</span>`;
+            let album = "";
+            if (file["webkitRelativePath"] != undefined)
+            {
+              let paths = file["webkitRelativePath"].split('/');
+              if (paths.length)
+              album = paths[paths.length];
+              console.log('Album',album);
+            }
+
+          // upload(file);
         }
-        upload(file);
+
+        download.style.display = 'block';
+        let loadFiles = document.getElementById('downloadFiles');
+        loadFiles.innerHTML += txt;
       }
     }
-    let header = document.querySelector('header');
-    header.innerHTML += txt;
   });
 
   function upload(file){
+    // use cloud firestore beta
     // Create the file metadata
     var metadata = {
-      contentType: file.type
+      contentType: file.type,
+      size: file.size,
+      fullPath: file.webkitRelativePath,
+      name: file.name,
     };
+    let album = "";
+    if (file["webkitRelativePath"] != undefined)
+    {
+      let paths = file["webkitRelativePath"].split('/');
+      if (paths.length)
+        album = paths[paths.length];
+      console.log('Album',album);
+    }
 
     // Upload file and metadata to the object 'images/mountains.jpg'
-    var uploadTask = storageRef.child('music/' + file.webkitRelativePath).put(file, metadata);
+    var uploadTask = storageRef.child(file.webkitRelativePath).put(file, metadata);
 
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
