@@ -144,6 +144,7 @@ updateTour('tourList', tourList);
                 let album = {name:prevAlbum, tracks: tracks};
                 albums.push(album);
                 tracks = [];
+                tracks.push(file);
               }
               prevAlbum = album;
             }
@@ -156,26 +157,6 @@ updateTour('tourList', tourList);
       resolve(albums);
     });
   }
-
-
-  audioFile.addEventListener('change',(ev)=>{
-    if ('files' in audioFile){
-      if (audioFile.files.length == 0)
-        txt = "Select one or more files";
-      else
-      {
-        findAlbums(audioFile.files)
-        .then(albums => {
-          console.log(albums);
-          let loadFiles = document.getElementById('downloadFiles');
-          if (loadFiles)
-            createHtml(albums, loadFiles);
-          download.style.display = 'block';
-        })
-        .catch(err => console.error(err));
-      }
-    }
-  });
 
   function createHtml(albums, showTag) {
     if (!albums || albums.length == 0)
@@ -195,7 +176,7 @@ updateTour('tourList', tourList);
           cover = new Promise((resolve, reject)=>{
             let reader = new FileReader();
             reader.onload = function(e) {
-              resolve(`<img src=${e.target.result} style="width:100px;">`);
+              resolve(`<img src=${e.target.result} style="width:100%;">`);
             }
             reader.readAsDataURL(file);
           });
@@ -213,15 +194,50 @@ updateTour('tourList', tourList);
           html += '</div>';
         }
       }
-      // let coverImg = '';
-      cover
-      .then((image) => {image})
-      .catch(err => console.error(err));
-      // console.log(cover);
-      // showTag.innerHTML += `<h2>Album: ${albumName}</h2><div class="downloadAlbum">${coverImg}` + html + `</div>`;
-    }
+      let image = '';
+      if (cover){
+        cover.then((image) => {
+          showTag.innerHTML += `<h2>Album: ${albumName}</h2><div class="downloadAlbum">${image}` + html + `</div>`;
+        })
+        .catch(err => console.error(err));
+      } else {
+        showTag.innerHTML += `<h2>Album: ${albumName}</h2><div class="downloadAlbum">${image}` + html + `</div>`;
+      }
 
+    }
   };
+
+  let uploadData;
+
+  audioFile.addEventListener('change',(ev)=>{
+    if ('files' in audioFile){
+      if (audioFile.files.length == 0)
+        txt = "Select one or more files";
+      else
+      {
+        findAlbums(audioFile.files)
+        .then(albums => {
+          console.log(albums);
+          let loadFiles = document.getElementById('downloadFiles');
+          if (loadFiles)
+            createHtml(albums, loadFiles);
+          download.style.display = 'block';
+          // console.log(JSON.stringify(albums));;
+          for (let album of albums) {
+            console.log(JSON.stringify(album));
+            for (let track of album.tracks) {
+              console.log(JSON.stringify(track));
+            }
+          }
+          let jsStr = JSON.stringify(albums,"",5);
+          console.log(JSON.parse(jsStr));
+          // loadFiles.innerHTML += JSON.stringify(albums);
+          // uploadData = {map: JSON.stringify(albums);}
+        })
+        .catch(err => console.error(err));
+      }
+    }
+  });
 
   function upload(file){
     // use cloud firestore beta
