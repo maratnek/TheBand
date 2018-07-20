@@ -119,42 +119,109 @@ updateTour('tourList', tourList);
     }
   });
 
+  // разбиваем оп альбомам
+  function findAlbums(files) {
+    let albums = [];
+    let prevAlbum = "";
+    let tracks = [];
+    return new Promise((resolve, reject)=>{
+      for (let i = 0; i < files.length; i++) {
+        let file = files[i];
+        if (file["webkitRelativePath"] != undefined)
+        {
+          let paths = file["webkitRelativePath"].split('/');
+          if (paths != undefined && paths.length)
+          {
+            let album = paths[paths.length-2];
+            if (album != "" && prevAlbum != album)
+            {
+              //first album
+              if (i == 0 && prevAlbum == ""){
+                tracks.push(file);
+              }
+              else {
+                // next album
+                let album = {name:prevAlbum, tracks: tracks};
+                albums.push(album);
+                tracks = [];
+              }
+              prevAlbum = album;
+            }
+            else {
+              tracks.push(file);
+            }
+          }
+        }
+      }
+      resolve(albums);
+    });
+  }
+
+
   audioFile.addEventListener('change',(ev)=>{
-    let txt = '';
     if ('files' in audioFile){
       if (audioFile.files.length == 0)
         txt = "Select one or more files";
       else
       {
-        for (let i = 0; i < audioFile.files.length; i++) {
-          let file = audioFile.files[i];
-          console.log(file);
-          txt += `<h3><strong>${i+1} . file  -- </strong>${file["name"]}</h3>`;
-          txt += `<span>Last Modifide -- ${file["lastModifiedDate"]}</span>`;
-          txt += `<span>Relative Path -- ${file["webkitRelativePath"]}</span>`;
-          txt += `<span>Size -- ${file["size"]}</span>`;
-          txt += `<span>Type -- ${file["type"]}</span>`;
-          // if (file["webkitRelativePath"] != undefined)
-            // console.log(file["webkitRelativePath"].split('/'));
-
-            let album = "";
-            if (file["webkitRelativePath"] != undefined)
-            {
-              let paths = file["webkitRelativePath"].split('/');
-              if (paths.length)
-              album = paths[paths.length];
-              console.log('Album',album);
-            }
-
-          // upload(file);
-        }
-
-        download.style.display = 'block';
-        let loadFiles = document.getElementById('downloadFiles');
-        loadFiles.innerHTML += txt;
+        findAlbums(audioFile.files)
+        .then(albums => {
+          console.log(albums);
+          let loadFiles = document.getElementById('downloadFiles');
+          if (loadFiles)
+            createHtml(albums, loadFiles);
+          download.style.display = 'block';
+        })
+        .catch(err => console.error(err));
       }
     }
   });
+
+  function createHtml(albums, showTag) {
+    if (!albums || albums.length == 0)
+    {
+      showTag.innerHTML = "Select one or more files";
+      return;
+    }
+    // let html = '';
+    for (let i = 0; i < albums.length; i++) {
+      let html = '';
+      let albumName = albums[i].name;
+      let tracks = albums[i].tracks;
+      let cover;
+      for (let i = 0; i < tracks.length; i++) {
+        let file = tracks[i];
+        if (file.type == 'image/jpeg'){
+          cover = new Promise((resolve, reject)=>{
+            let reader = new FileReader();
+            reader.onload = function(e) {
+              resolve(`<img src=${e.target.result} style="width:100px;">`);
+            }
+            reader.readAsDataURL(file);
+          });
+        }
+        else
+        {
+          let date = new Date(file.lastModifiedDate);
+          date = date.toLocaleDateString('en-US',{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+          html += '<div class="downloadTrack">';
+          html += `<h3><strong>${i+1} . track  -- </strong>${file["name"]}</h3>`;
+          html += `<span>Last Modifide -- ${date}</span>`;
+          html += `<span>Relative Path -- ${file["webkitRelativePath"]}</span>`;
+          html += `<span>Size -- ${file["size"]}</span>`;
+          html += `<span>Type -- ${file["type"]}</span>`;
+          html += '</div>';
+        }
+      }
+      // let coverImg = '';
+      cover
+      .then((image) => {image})
+      .catch(err => console.error(err));
+      // console.log(cover);
+      // showTag.innerHTML += `<h2>Album: ${albumName}</h2><div class="downloadAlbum">${coverImg}` + html + `</div>`;
+    }
+
+  };
 
   function upload(file){
     // use cloud firestore beta

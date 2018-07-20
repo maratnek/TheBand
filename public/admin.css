@@ -70,7 +70,25 @@ header h1 {
   padding: 1em;
   margin: 2em;
 }
+/* Album */
+.downloadFiles * {
+  margin: 5px;
+  padding: 5px;
+}
 
+.downloadFiles .downloadAlbum {
+  background: var(--brown-light);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.downloadFiles .downloadTrack {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+/* Tours */
 .tourPanel {
   display: grid;
   grid-template-columns: 1fr 1fr;
