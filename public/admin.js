@@ -1,4 +1,6 @@
 import {store, storage, storageRef, updateTour, tourList} from "./fb_password.js";
+import {stringifyJSON} from "./jsonstringify.js";
+
 window.onload = ()=>{
 
 updateTour('tourList', tourList);
@@ -106,17 +108,38 @@ updateTour('tourList', tourList);
   const audioFile = document.getElementById('audioFile');
   const download = document.getElementById('download');
 
+  let uploadData;
+  let loadMusic = false;
   download.style.display = 'none';
   download.addEventListener('click',(ev)=>{
-    if ('files' in audioFile){
-      if (audioFile.files.length == 0)
-        console.log("Select one or more files");
-      else
+    //json
+    if (uploadData){
       {
-        for (let i = 0; i < audioFile.files.length; i++)
-          upload(file);
+        let blob = new Blob([stringifyJSON(uploadData)], {type : 'application/json'});
+        const metadata = {
+          contentType: 'json',
+          name: 'map.json',
+        };
+        const path = 'music-map/map';
+        upload(blob, metadata, path);
       }
+      if (loadMusic)
+      for (let album of uploadData) {
+        for (let file of album.tracks) {
+          const metadata = {
+            contentType: file.type,
+            size: file.size,
+            fullPath: file.webkitRelativePath,
+            name: file.name,
+          };
+          const path = file.webkitRelativePath;
+          upload(file, metadata, path);
+        }
+      }
+    } else {
+      console.error('upload data empty');
     }
+
   });
 
   // разбиваем оп альбомам
@@ -124,6 +147,18 @@ updateTour('tourList', tourList);
     let albums = [];
     let prevAlbum = "";
     let tracks = [];
+    let tracksData = [];
+    function createObjectOfFile(file){
+        if (file)
+          return {
+            name: file.name,
+            date: file.lastModifiedDate.toJSON(),
+            webkitRelativePath: file.webkitRelativePath,
+            size: JSON.stringify(file.size),
+            type: file.type
+          }
+
+    };
     return new Promise((resolve, reject)=>{
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
@@ -133,23 +168,27 @@ updateTour('tourList', tourList);
           if (paths != undefined && paths.length)
           {
             let album = paths[paths.length-2];
-            if (album != "" && prevAlbum != album)
             {
+            if (album != "" && prevAlbum != album)
               //first album
               if (i == 0 && prevAlbum == ""){
                 tracks.push(file);
+                console.log(createObjectOfFile(file));
+                tracksData.push(createObjectOfFile(file));
               }
               else {
                 // next album
-                let album = {name:prevAlbum, tracks: tracks};
+                let album = {name:prevAlbum, tracks: tracks, tracksData: tracksData};
                 albums.push(album);
                 tracks = [];
                 tracks.push(file);
+                tracksData.push(createObjectOfFile(file));
               }
               prevAlbum = album;
             }
             else {
               tracks.push(file);
+              tracksData.push(createObjectOfFile(file));
             }
           }
         }
@@ -207,7 +246,6 @@ updateTour('tourList', tourList);
     }
   };
 
-  let uploadData;
 
   audioFile.addEventListener('change',(ev)=>{
     if ('files' in audioFile){
@@ -217,48 +255,23 @@ updateTour('tourList', tourList);
       {
         findAlbums(audioFile.files)
         .then(albums => {
-          console.log(albums);
+          // console.log(albums);
+          // console.log(stringifyJSON(albums));
+          uploadData = albums;
+          // console.log(albums);
           let loadFiles = document.getElementById('downloadFiles');
           if (loadFiles)
             createHtml(albums, loadFiles);
           download.style.display = 'block';
-          // console.log(JSON.stringify(albums));;
-          for (let album of albums) {
-            console.log(JSON.stringify(album));
-            for (let track of album.tracks) {
-              console.log(JSON.stringify(track));
-            }
-          }
-          let jsStr = JSON.stringify(albums,"",5);
-          console.log(JSON.parse(jsStr));
-          // loadFiles.innerHTML += JSON.stringify(albums);
-          // uploadData = {map: JSON.stringify(albums);}
         })
         .catch(err => console.error(err));
       }
     }
   });
 
-  function upload(file){
-    // use cloud firestore beta
-    // Create the file metadata
-    var metadata = {
-      contentType: file.type,
-      size: file.size,
-      fullPath: file.webkitRelativePath,
-      name: file.name,
-    };
-    let album = "";
-    if (file["webkitRelativePath"] != undefined)
-    {
-      let paths = file["webkitRelativePath"].split('/');
-      if (paths.length)
-        album = paths[paths.length];
-      console.log('Album',album);
-    }
-
+  function upload(file, metadata, path){
     // Upload file and metadata to the object 'images/mountains.jpg'
-    var uploadTask = storageRef.child(file.webkitRelativePath).put(file, metadata);
+    var uploadTask = storageRef.child(path).put(file, metadata);
 
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'

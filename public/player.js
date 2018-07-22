@@ -1,4 +1,5 @@
 import {UpDownId} from './main.js';
+import {store, storage, storageRef, updateTour, tourList} from "./fb_password.js";
 
 $(document).ready(()=>{
 
@@ -110,52 +111,106 @@ $(document).ready(()=>{
 
   let albums = {};
 
-  fetch('./new.json')
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson) {
-    console.log(myJson);
-    albums = myJson;
-    // console.log(myJson["musician list"]);
-    let path = 'music/westworld';
+  var starsRef = storageRef.child('music-map').child('map');
 
-    if (myJson["dirs"] && myJson["dirs"].length){
-      let htmlAlbums = "";
-      myJson.dirs.forEach((alb,index) => {
-        if (alb.albumName) {
-          htmlAlbums += `
-          <div class="name"><h4>${alb.albumName}</h4></div>
-          <div class="circle"></div>
-          <div class="year">2016</div>
-          <div class="listen">
-            <button id="${index}">Listen</button>
-          </div>
-          <div class="buy">
-            <button id="${index}">Buy</button>
-          </div>`;
-        }
-      });
+  // Get the download URL
+  starsRef.getDownloadURL().then(function(url) {
+    // Insert url into an <img> tag to "download"
+    console.log(url);
+    getJSON(url);
 
-      currentAlbum = myJson.dirs[currentAlb];
-      playlistCreate(currentAlbum);
-      $('#discography .list').html(htmlAlbums);
-      $('#discography .listen button').click((ev)=>{
-        console.log(ev.currentTarget.id);
-        changePlaylist(ev.currentTarget.id);
-      });
-    }else{
-      $('#discography .list').html("Not albums");
+    // var xhr = new XMLHttpRequest();
+    // xhr.responseType = 'json';
+    // xhr.onload = function(event) {
+    //   var json = xhr.response;
+    //   console.log(json);
+    // };
+    // xhr.open('GET', url);
+    // xhr.send();
+
+  }).catch(function(error) {
+
+    // A full list of error codes is available at
+    // https://firebase.google.com/docs/storage/web/handle-errors
+    switch (error.code) {
+      case 'storage/object_not_found':
+      // File doesn't exist
+      break;
+
+      case 'storage/unauthorized':
+      // User doesn't have permission to access the object
+      break;
+
+      case 'storage/canceled':
+      // User canceled the upload
+      break;
+
+      case 'storage/unknown':
+      // Unknown error occurred, inspect the server response
+      break;
     }
-
   });
 
+  function getJSON(json){
+    console.log(json)
+    let request = new Request(json);
+    fetch(request, {
+      // method: 'GET',
+      // mode: 'cors',
+      // headers: {
+        // "Content-Type": "application/json; charset=utf-8",
+        // "Access-Control-Allow-Origin": "",
+        // "Origin":"",
+      // }
+    })
+    .then(function(response) {
+      console.log(response);
+      if (response.ok)
+        return response.json();
+    })
+    .then(function(myJson) {
+      console.log(myJson);
+      albums = myJson;
+      // console.log(myJson["musician list"]);
+      let path = 'music/westworld';
+
+      if (myJson["dirs"] && myJson["dirs"].length){
+        let htmlAlbums = "";
+        myJson.dirs.forEach((alb,index) => {
+          if (alb.albumName) {
+            htmlAlbums += `
+            <div class="name"><h4>${alb.albumName}</h4></div>
+            <div class="circle"></div>
+            <div class="year">2016</div>
+            <div class="listen">
+            <button id="${index}">Listen</button>
+            </div>
+            <div class="buy">
+            <button id="${index}">Buy</button>
+            </div>`;
+          }
+        });
+
+        currentAlbum = myJson.dirs[currentAlb];
+        playlistCreate(currentAlbum);
+        $('#discography .list').html(htmlAlbums);
+        $('#discography .listen button').click((ev)=>{
+          console.log(ev.currentTarget.id);
+          changePlaylist(ev.currentTarget.id);
+        });
+      }else{
+        $('#discography .list').html("Not albums");
+      }
+
+    });
+  }
+
   function changePlaylist(albumId) {
-      currentAlbum = albums.dirs[albumId];
-      playlistCreate(currentAlbum);
-      currentTrack = 0;
-      playerUpdate();
-      playPause('play');
+    currentAlbum = albums.dirs[albumId];
+    playlistCreate(currentAlbum);
+    currentTrack = 0;
+    playerUpdate();
+    playPause('play');
 
   }
 
@@ -167,28 +222,28 @@ $(document).ready(()=>{
   }
 
   function playlistCreate(alb) {
-      if (alb && alb['track list'] && alb['track list'].length){
-        let htmlTracks = "";
-        playlist = [];
-        alb['track list'].forEach( (mus,index) => {
-          playlist.push(alb.path + '/' + mus);
-          console.log(mus);
-          htmlTracks += `
-          <li>
-            <div class="triangle"></div>
-            <div class="num">${index}.</div>
-            <h5>${mus}</h5>
-            <div class="point">......................</div>
-            <div class="long">3:20</div>
-          </li>
-          `;
-        });
-        console.log(alb.albumName);
-        $('#playerList h4').html(alb.albumName);
-        $('#playerList ul').html(htmlTracks);
-      }else{
-        $('#playerList').html("Not tracks");
-      }
+    if (alb && alb['track list'] && alb['track list'].length){
+      let htmlTracks = "";
+      playlist = [];
+      alb['track list'].forEach( (mus,index) => {
+        playlist.push(alb.path + '/' + mus);
+        console.log(mus);
+        htmlTracks += `
+        <li>
+        <div class="triangle"></div>
+        <div class="num">${index}.</div>
+        <h5>${mus}</h5>
+        <div class="point">......................</div>
+        <div class="long">3:20</div>
+        </li>
+        `;
+      });
+      console.log(alb.albumName);
+      $('#playerList h4').html(alb.albumName);
+      $('#playerList ul').html(htmlTracks);
+    }else{
+      $('#playerList').html("Not tracks");
+    }
   }
 
 });
