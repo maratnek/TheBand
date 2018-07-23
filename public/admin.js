@@ -124,18 +124,18 @@ updateTour('tourList', tourList);
         upload(blob, metadata, path);
       }
       if (loadMusic)
-      for (let album of uploadData) {
-        for (let file of album.tracks) {
-          const metadata = {
-            contentType: file.type,
-            size: file.size,
-            fullPath: file.webkitRelativePath,
-            name: file.name,
-          };
-          const path = file.webkitRelativePath;
-          upload(file, metadata, path);
+        for (let album of uploadData) {
+          for (let file of album.tracks) {
+            const metadata = {
+              contentType: file.type,
+              size: file.size,
+              fullPath: file.webkitRelativePath,
+              name: file.name,
+            };
+            const path = file.webkitRelativePath;
+            upload(file, metadata, path);
+          }
         }
-      }
     } else {
       console.error('upload data empty');
     }
@@ -181,6 +181,7 @@ updateTour('tourList', tourList);
                 let album = {name:prevAlbum, tracks: tracks, tracksData: tracksData};
                 albums.push(album);
                 tracks = [];
+                tracksData = [];
                 tracks.push(file);
                 tracksData.push(createObjectOfFile(file));
               }

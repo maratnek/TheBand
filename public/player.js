@@ -72,7 +72,7 @@ $(document).ready(()=>{
       $('.control .play').show(timeAnimate);
       $('.control .pause').hide(timeAnimate);
       if (updateInterval)
-      clearInterval(updateInterval);
+        clearInterval(updateInterval);
     }
   };
 
@@ -85,13 +85,13 @@ $(document).ready(()=>{
   // Track position
   $('.track').on('click',function(ev) {
 
-    console.log(ev.currentTarget.clientWidth);
-    console.log('click',ev);
-    console.log('screen',ev.screenX);
-    console.log('client',ev.clientX);
-    console.log('offset',ev.offsetX);
-    console.log(ev.screenX - ev.clientX);
-    console.log(ev.pageX);
+    // console.log(ev.currentTarget.clientWidth);
+    // console.log('click',ev);
+    // console.log('screen',ev.screenX);
+    // console.log('client',ev.clientX);
+    // console.log('offset',ev.offsetX);
+    // console.log(ev.screenX - ev.clientX);
+    // console.log(ev.pageX);
     let place = Math.floor(ev.offsetX / ev.currentTarget.clientWidth * 100);
     console.log('% - ',  place);
     positionChange(place);
@@ -109,25 +109,17 @@ $(document).ready(()=>{
   // $('.track').on('mouseout', ev => console.log('mouseout',ev));
   // $('.track').on('mousemove', ev => console.log('mousemove',ev));
 
-  let albums = {};
+  function downloadTrack(path){
 
-  var starsRef = storageRef.child('music-map').child('map');
+  }
+
+  var starsRef = storageRef.child('music-map/map');
 
   // Get the download URL
   starsRef.getDownloadURL().then(function(url) {
     // Insert url into an <img> tag to "download"
     console.log(url);
     getJSON(url);
-
-    // var xhr = new XMLHttpRequest();
-    // xhr.responseType = 'json';
-    // xhr.onload = function(event) {
-    //   var json = xhr.response;
-    //   console.log(json);
-    // };
-    // xhr.open('GET', url);
-    // xhr.send();
-
   }).catch(function(error) {
 
     // A full list of error codes is available at
@@ -151,35 +143,30 @@ $(document).ready(()=>{
     }
   });
 
+  let albums = {};
   function getJSON(json){
-    console.log(json)
-    let request = new Request(json);
-    fetch(request, {
-      // method: 'GET',
-      // mode: 'cors',
-      // headers: {
-        // "Content-Type": "application/json; charset=utf-8",
-        // "Access-Control-Allow-Origin": "",
-        // "Origin":"",
-      // }
-    })
+    // console.log(json)
+    // let request = new Request(json);
+    fetch(json)
     .then(function(response) {
-      console.log(response);
+      // console.log(response);
       if (response.ok)
         return response.json();
+      else
+        return [];
     })
     .then(function(myJson) {
       console.log(myJson);
       albums = myJson;
       // console.log(myJson["musician list"]);
-      let path = 'music/westworld';
+      // let path = 'music/westworld';
 
-      if (myJson["dirs"] && myJson["dirs"].length){
+      if (albums && albums.length){
         let htmlAlbums = "";
-        myJson.dirs.forEach((alb,index) => {
-          if (alb.albumName) {
+        albums.forEach((alb,index) => {
+          if (alb.name) {
             htmlAlbums += `
-            <div class="name"><h4>${alb.albumName}</h4></div>
+            <div class="name"><h4>${alb.name}</h4></div>
             <div class="circle"></div>
             <div class="year">2016</div>
             <div class="listen">
@@ -191,11 +178,11 @@ $(document).ready(()=>{
           }
         });
 
-        currentAlbum = myJson.dirs[currentAlb];
+        currentAlbum = albums[currentAlb];
         playlistCreate(currentAlbum);
         $('#discography .list').html(htmlAlbums);
         $('#discography .listen button').click((ev)=>{
-          console.log(ev.currentTarget.id);
+          // console.log(ev.currentTarget.id);
           changePlaylist(ev.currentTarget.id);
         });
       }else{
@@ -206,7 +193,7 @@ $(document).ready(()=>{
   }
 
   function changePlaylist(albumId) {
-    currentAlbum = albums.dirs[albumId];
+    currentAlbum = albums[albumId];
     playlistCreate(currentAlbum);
     currentTrack = 0;
     playerUpdate();
@@ -216,30 +203,30 @@ $(document).ready(()=>{
 
   function playerUpdate() {
     console.log(currentAlbum);
-    player.src = currentAlbum.path + '/' + currentAlbum['track list'][currentTrack];
-    $('.song h4').html(currentAlbum.albumName);
-    $('.song h5').html(currentAlbum['track list'][currentTrack]);
+    player.src = currentAlbum.webkitRelativePath;
+    $('.song h4').html(currentAlbum.name);
+    $('.song h5').html(currentAlbum.tracksData[currentTrack]);
   }
 
   function playlistCreate(alb) {
-    if (alb && alb['track list'] && alb['track list'].length){
+    if (alb && alb['tracksData'] && alb['tracksData'].length){
       let htmlTracks = "";
       playlist = [];
-      alb['track list'].forEach( (mus,index) => {
-        playlist.push(alb.path + '/' + mus);
-        console.log(mus);
+      alb['tracksData'].forEach( (mus,index) => {
+        playlist.push(mus.webkitRelativePath);
+        // console.log(mus);
         htmlTracks += `
         <li>
         <div class="triangle"></div>
         <div class="num">${index}.</div>
-        <h5>${mus}</h5>
+        <h5>${mus.name}</h5>
         <div class="point">......................</div>
         <div class="long">3:20</div>
         </li>
         `;
       });
-      console.log(alb.albumName);
-      $('#playerList h4').html(alb.albumName);
+      // console.log(alb.albumName);
+      $('#playerList h4').html(alb.name);
       $('#playerList ul').html(htmlTracks);
     }else{
       $('#playerList').html("Not tracks");
