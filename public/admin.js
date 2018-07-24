@@ -168,15 +168,14 @@ updateTour('tourList', tourList);
           if (paths != undefined && paths.length)
           {
             let album = paths[paths.length-2];
-            {
             if (album != "" && prevAlbum != album)
+            {
               //first album
               if (i == 0 && prevAlbum == ""){
                 tracks.push(file);
                 console.log(createObjectOfFile(file));
                 tracksData.push(createObjectOfFile(file));
-              }
-              else {
+              } else {
                 // next album
                 let album = {name:prevAlbum, tracks: tracks, tracksData: tracksData};
                 albums.push(album);
@@ -186,8 +185,7 @@ updateTour('tourList', tourList);
                 tracksData.push(createObjectOfFile(file));
               }
               prevAlbum = album;
-            }
-            else {
+            } else {
               tracks.push(file);
               tracksData.push(createObjectOfFile(file));
             }

@@ -8,19 +8,17 @@ $(document).ready(()=>{
   let currentAlb = 0;
 
   let player = $('#audioPlayer').get(0);
-  console.log('player', player);
 
   let currentAlbum = {};
 
-  let playlist = [
-    "music/westworld/2018 - Runaway/01. Runaway.mp3",
-    "music/westworld/2018 - Seven Nation Army/01. Seven Nation Army.mp3",
-    "music/westworld/2018 - Akane No Mai/02. Paint It Black.mp3",
-    "music/westworld/2016 - Westworld/01. Main Title Theme - Westworld.mp3",
-  ];
+  let playlist = [];
+  // let playlist = [
+  //   "music/westworld/2018 - Runaway/01. Runaway.mp3",
+  //   "music/westworld/2018 - Seven Nation Army/01. Seven Nation Army.mp3",
+  //   "music/westworld/2018 - Akane No Mai/02. Paint It Black.mp3",
+  //   "music/westworld/2016 - Westworld/01. Main Title Theme - Westworld.mp3",
+  // ];
 
-
-  console.log($('#discography .listen button'));
 
   function changeTrack(ev) {
     let id = ev.currentTarget.id;
@@ -79,7 +77,6 @@ $(document).ready(()=>{
   $('.control').on('click',ev => playPause(ev.target.className));
 
   // Mouse events
-
   $('#audioPlayer').on('click', (ev) => changeTrack(ev));
 
   // Track position
@@ -97,10 +94,7 @@ $(document).ready(()=>{
     positionChange(place);
 
     if (player)
-    {
       player.currentTime = player.duration * place / 100;
-      // positionChange(player.currentTime/player.duration*100);
-    }
 
   });
   // $('.track').on('mousedown', ev => console.log('mousedown',ev));
@@ -110,7 +104,34 @@ $(document).ready(()=>{
   // $('.track').on('mousemove', ev => console.log('mousemove',ev));
 
   function downloadTrack(path){
+    let trackRef = storageRef.child(path);
 
+  // Get the download URL
+  trackRef.getDownloadURL().then((url) => {
+    // Insert url into an <img> tag to "download"
+    getJSON(url);
+  }).catch(function(error) {
+
+    // A full list of error codes is available at
+    // https://firebase.google.com/docs/storage/web/handle-errors
+    switch (error.code) {
+      case 'storage/object_not_found':
+      // File doesn't exist
+      break;
+
+      case 'storage/unauthorized':
+      // User doesn't have permission to access the object
+      break;
+
+      case 'storage/canceled':
+      // User canceled the upload
+      break;
+
+      case 'storage/unknown':
+      // Unknown error occurred, inspect the server response
+      break;
+    }
+  });
   }
 
   var starsRef = storageRef.child('music-map/map');
@@ -119,7 +140,22 @@ $(document).ready(()=>{
   starsRef.getDownloadURL().then(function(url) {
     // Insert url into an <img> tag to "download"
     console.log(url);
-    getJSON(url);
+    fetch(url)
+    .then((response) => {
+      console.log(response);
+      if (response.ok)
+        return response.blob();
+      // else
+        // return [];
+    })
+    .then(function(file) {
+      console.log(file);
+      let objUrl = URL.createObjectURL(file);
+      console.log(objUrl);
+      player.src = objUrl;
+      console.log(player.src);
+    });
+
   }).catch(function(error) {
 
     // A full list of error codes is available at
@@ -198,7 +234,6 @@ $(document).ready(()=>{
     currentTrack = 0;
     playerUpdate();
     playPause('play');
-
   }
 
   function playerUpdate() {
