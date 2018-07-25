@@ -1,5 +1,6 @@
 import {UpDownId} from './main.js';
 import {store, storage, storageRef, updateTour, tourList} from "./fb_password.js";
+import {getStorageRealUrl} from "./fb_password.js";
 
 $(document).ready(()=>{
 
@@ -20,16 +21,16 @@ $(document).ready(()=>{
   // ];
 
 
-  function changeTrack(ev) {
+  async function changeTrack(ev) {
     let id = ev.currentTarget.id;
     console.log(id);
     if (id == 'nextTrack')
-    currentTrack = UpDownId('up',currentTrack, playlist.length);
+    currentTrack = UpDownId('up',currentTrack, currentAlbum.tracksData.length);
     else if(id == 'prevTrack')
-    currentTrack = UpDownId('down',currentTrack, playlist.length);
+    currentTrack = UpDownId('down',currentTrack, currentAlbum.tracksData.length);
     console.log('Current track', currentTrack);
 
-    playerUpdate();
+    await playerUpdate();
     playPause(sost);
   }
 
@@ -103,89 +104,58 @@ $(document).ready(()=>{
   // $('.track').on('mouseout', ev => console.log('mouseout',ev));
   // $('.track').on('mousemove', ev => console.log('mousemove',ev));
 
-  function downloadTrack(path){
-    let trackRef = storageRef.child(path);
-
-  // Get the download URL
-  trackRef.getDownloadURL().then((url) => {
-    // Insert url into an <img> tag to "download"
-    getJSON(url);
-  }).catch(function(error) {
-
-    // A full list of error codes is available at
-    // https://firebase.google.com/docs/storage/web/handle-errors
-    switch (error.code) {
-      case 'storage/object_not_found':
-      // File doesn't exist
-      break;
-
-      case 'storage/unauthorized':
-      // User doesn't have permission to access the object
-      break;
-
-      case 'storage/canceled':
-      // User canceled the upload
-      break;
-
-      case 'storage/unknown':
-      // Unknown error occurred, inspect the server response
-      break;
+  async function downloadTrack(path){
+    let url = await getStorageRealUrl(path);
+    for (let pair of playlist) {
+        if (pair.path == path)
+        {
+          console.log('find this path', pair.path);
+          player.src = pair.objAudio;
+          return;
+        }
     }
-  });
+    console.log('not found this path', path, sost);
+    if (url && url.length)
+    {
+      await fetch(url)
+      .then((response) => {
+        console.log(response);
+        if (response.ok)
+        return response.blob();
+      })
+      .then((file) => {
+        console.log(file);
+        let objUrl = URL.createObjectURL(file);
+        console.log(objUrl);
+        player.src = objUrl;
+        // save
+        playlist.push({
+          path: path,
+          objAudio: objUrl
+        })
+        //console.log(player.src);
+      });
+    }
+    // return url;
   }
 
-  var starsRef = storageRef.child('music-map/map');
 
-  // Get the download URL
-  starsRef.getDownloadURL().then(function(url) {
-    // Insert url into an <img> tag to "download"
-    console.log(url);
-    fetch(url)
-    .then((response) => {
-      console.log(response);
-      if (response.ok)
-        return response.blob();
-      // else
-        // return [];
-    })
-    .then(function(file) {
-      console.log(file);
-      let objUrl = URL.createObjectURL(file);
-      console.log(objUrl);
-      player.src = objUrl;
-      console.log(player.src);
-    });
-
-  }).catch(function(error) {
-
-    // A full list of error codes is available at
-    // https://firebase.google.com/docs/storage/web/handle-errors
-    switch (error.code) {
-      case 'storage/object_not_found':
-      // File doesn't exist
-      break;
-
-      case 'storage/unauthorized':
-      // User doesn't have permission to access the object
-      break;
-
-      case 'storage/canceled':
-      // User canceled the upload
-      break;
-
-      case 'storage/unknown':
-      // Unknown error occurred, inspect the server response
-      break;
-    }
-  });
 
   let albums = {};
-  function getJSON(json){
-    // console.log(json)
-    // let request = new Request(json);
-    fetch(json)
+
+  getJSON('music-map/map');
+
+  async function getJSON(path){
+
+    console.log(path);
+    let url = await getStorageRealUrl(path);
+    console.log(url);
+    if (!(url && url.length))
+      return;
+    console.log(url);
+
+    fetch(url)
     .then(function(response) {
-      // console.log(response);
       if (response.ok)
         return response.json();
       else
@@ -194,8 +164,6 @@ $(document).ready(()=>{
     .then(function(myJson) {
       console.log(myJson);
       albums = myJson;
-      // console.log(myJson["musician list"]);
-      // let path = 'music/westworld';
 
       if (albums && albums.length){
         let htmlAlbums = "";
@@ -216,9 +184,9 @@ $(document).ready(()=>{
 
         currentAlbum = albums[currentAlb];
         playlistCreate(currentAlbum);
+        playerUpdate();
         $('#discography .list').html(htmlAlbums);
         $('#discography .listen button').click((ev)=>{
-          // console.log(ev.currentTarget.id);
           changePlaylist(ev.currentTarget.id);
         });
       }else{
@@ -228,27 +196,33 @@ $(document).ready(()=>{
     });
   }
 
-  function changePlaylist(albumId) {
+  async function changePlaylist(albumId) {
+    // playPause('stop');
     currentAlbum = albums[albumId];
     playlistCreate(currentAlbum);
     currentTrack = 0;
-    playerUpdate();
+    await playerUpdate();
+    console.log('play');
     playPause('play');
   }
 
-  function playerUpdate() {
-    console.log(currentAlbum);
-    player.src = currentAlbum.webkitRelativePath;
+  async function playerUpdate() {
     $('.song h4').html(currentAlbum.name);
-    $('.song h5').html(currentAlbum.tracksData[currentTrack]);
+    $('.song h5').html(currentAlbum.tracksData[currentTrack].name);
+    console.log(currentAlbum);
+    // player.src = currentAlbum.webkitRelativePath;
+    console.log(currentTrack, currentAlbum.tracksData[currentTrack]);
+    let path = currentAlbum.tracksData[currentTrack].webkitRelativePath;
+    await downloadTrack(path);
+    // player.src = await downloadTrack(path);
   }
 
   function playlistCreate(alb) {
     if (alb && alb['tracksData'] && alb['tracksData'].length){
       let htmlTracks = "";
-      playlist = [];
+      //playlist = [];
       alb['tracksData'].forEach( (mus,index) => {
-        playlist.push(mus.webkitRelativePath);
+        //playlist.push(mus.webkitRelativePath);
         // console.log(mus);
         htmlTracks += `
         <li>
@@ -260,7 +234,6 @@ $(document).ready(()=>{
         </li>
         `;
       });
-      // console.log(alb.albumName);
       $('#playerList h4').html(alb.name);
       $('#playerList ul').html(htmlTracks);
     }else{

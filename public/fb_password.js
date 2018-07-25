@@ -20,6 +20,38 @@ const storageRef = storage.ref();
 // firebase export
 export {store, storage, storageRef};
 
+export async function getStorageRealUrl(path){
+    let pathRef = storageRef.child(path);
+    function getUrl(){
+      return new Promise((resolve, reject)=>{
+        pathRef.getDownloadURL().then((urlStorage) => {
+          resolve(urlStorage);
+        }).catch(function(error) {
+          switch (error.code) {
+            case 'storage/object_not_found':
+            console.error("File doesn't exist");
+            break;
+
+            case 'storage/unauthorized':
+            console.error("User doesn't have permission to access the object");
+            break;
+
+            case 'storage/canceled':
+            console.error("User canceled the upload");
+            break;
+
+            case 'storage/unknown':
+            console.error("Unknown error occurred, inspect the server response");
+            break;
+          }
+        });
+      });
+    }
+    let url =  await getUrl();
+    console.log(url);
+    return url;
+  }
+
 export function tourList(querySnapshot, docElementId){
     let tourList = document.getElementById(docElementId);
     let li = "";

@@ -148,16 +148,32 @@ updateTour('tourList', tourList);
     let prevAlbum = "";
     let tracks = [];
     let tracksData = [];
+    let cover = null;
+    function IsCover(file)
+    {
+      if (file.type == 'image/jpeg')
+      {
+        cover = {
+          name: file.name,
+          date: file.lastModifiedDate.toJSON(),
+          webkitRelativePath: file.webkitRelativePath,
+          size: JSON.stringify(file.size),
+          type: file.type
+        }
+        return true;
+      }
+      else
+       return false;
+    }
     function createObjectOfFile(file){
         if (file)
-          return {
-            name: file.name,
-            date: file.lastModifiedDate.toJSON(),
-            webkitRelativePath: file.webkitRelativePath,
-            size: JSON.stringify(file.size),
-            type: file.type
-          }
-
+            return {
+              name: file.name,
+              date: file.lastModifiedDate.toJSON(),
+              webkitRelativePath: file.webkitRelativePath,
+              size: JSON.stringify(file.size),
+              type: file.type
+            }
     };
     return new Promise((resolve, reject)=>{
       for (let i = 0; i < files.length; i++) {
@@ -174,20 +190,23 @@ updateTour('tourList', tourList);
               if (i == 0 && prevAlbum == ""){
                 tracks.push(file);
                 console.log(createObjectOfFile(file));
-                tracksData.push(createObjectOfFile(file));
+                if (!IsCover(file))
+                  tracksData.push(createObjectOfFile(file));
               } else {
                 // next album
-                let album = {name:prevAlbum, tracks: tracks, tracksData: tracksData};
+                let album = {name:prevAlbum, cover:cover, tracks: tracks, tracksData: tracksData};
                 albums.push(album);
                 tracks = [];
                 tracksData = [];
                 tracks.push(file);
-                tracksData.push(createObjectOfFile(file));
+                if (!IsCover(file))
+                  tracksData.push(createObjectOfFile(file));
               }
               prevAlbum = album;
             } else {
               tracks.push(file);
-              tracksData.push(createObjectOfFile(file));
+              if (!IsCover(file))
+                tracksData.push(createObjectOfFile(file));
             }
           }
         }
